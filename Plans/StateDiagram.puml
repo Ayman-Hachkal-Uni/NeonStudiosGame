@@ -1,0 +1,9 @@
+@startuml State Diagram
+
+[*] -> Paused
+Paused -> MapState
+Paused : Pause Menu
+Paused : Can continue or restart 
+
+MapState -> [*]
+@enduml
