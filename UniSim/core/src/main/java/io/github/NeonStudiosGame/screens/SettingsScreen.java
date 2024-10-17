@@ -1,20 +1,15 @@
 package io.github.NeonStudiosGame.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.UniSim;
-
-import java.util.Set;
 
 public class SettingsScreen implements Screen {
 
@@ -34,7 +29,7 @@ public class SettingsScreen implements Screen {
 
     public SettingsScreen(UniSim UniSim) {
         parent = UniSim; // Sets the parent class (used to call preferences, switch screens)
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FitViewport(640f, 360f));
         Gdx.input.setInputProcessor(stage);
 
     }

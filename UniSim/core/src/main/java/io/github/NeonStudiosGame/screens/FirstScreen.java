@@ -4,21 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.UniSim;
 
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static com.badlogic.gdx.scenes.scene2d.InputEvent.Type.exit;
-import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 
 /** First screen of the application. Displayed after the application is created. */
 public class FirstScreen implements Screen {
@@ -28,10 +22,12 @@ public class FirstScreen implements Screen {
 
 
 
+
+
     public FirstScreen (UniSim UniSim) {
         parent = UniSim; // Used for purposes such as switching screens
 
-        stage = new Stage(new ScreenViewport()); // Creates a new stage object for the current screen
+        stage = new Stage(new FitViewport(640f, 360f)); // Creates a new stage object for the current screen
     }
     @Override
     public void show() {
