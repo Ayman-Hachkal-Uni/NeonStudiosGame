@@ -8,6 +8,7 @@ public class AppPreferences {
     private static final String Settings_Music_Vol = "Volume";
     private static final String Settings_Music_Enabled = "Music?";
     private static final String Settings_Sound_Effects = "Sound_Effects?";
+    private static final String Settings_Sound_Vol = "SFX Volume?";
     private static final String Settings_High_Contrast = "High_Contrast?";
     private static final String Settings_Large_Font = "Large_Font?";
     private static final String Settings_Name = "UniSim_Settings";
@@ -49,6 +50,15 @@ public class AppPreferences {
         getSettings().putBoolean(Settings_Sound_Effects, soundEffectsEnabled);
         getSettings().flush();
     }
+    public float getSoundVolume() {
+        return getSettings().getFloat(Settings_Sound_Vol, 0.5f);
+    }
+
+    public void setSoundVolume(float volume) {
+        getSettings().putFloat(Settings_Sound_Vol, volume);
+        getSettings().flush();
+    }
+
 
     public boolean isHighContrastEnabled() {
         return getSettings().getBoolean(Settings_High_Contrast, true);

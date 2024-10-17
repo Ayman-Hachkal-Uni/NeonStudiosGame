@@ -3,6 +3,7 @@ package io.github.NeonStudiosGame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -28,7 +29,7 @@ public class SettingsScreen implements Screen {
     private Label highContrastLabel;
     private UniSim parent;
 
-
+    Sound soundTest = Gdx.audio.newSound(Gdx.files.internal("game_pop_sound.wav"));
 
 
     public SettingsScreen(UniSim UniSim) {
@@ -64,9 +65,10 @@ public class SettingsScreen implements Screen {
         });
 
         final Slider soundSlider = new Slider( 0f, 1f, 0.1f,false, skin );
-        soundSlider.setValue( parent.getPreferences().getMusicVolume());
-        volumeMusicSlider.addListener(event -> {
-            parent.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
+        soundSlider.setValue( parent.getPreferences().getSoundVolume());
+        soundSlider.addListener(event -> {
+            parent.getPreferences().setSoundVolume(soundSlider.getValue());
+            soundTest.play(soundSlider.getValue());
             return false;
         });
 
@@ -81,9 +83,9 @@ public class SettingsScreen implements Screen {
 
         final CheckBox soundCheckbox = new CheckBox(null, skin);
         soundCheckbox.setChecked( parent.getPreferences().isSoundEffectsEnabled());
-        musicCheckbox.addListener(event -> {
+        soundCheckbox.addListener(event -> {
             boolean enabled = soundCheckbox.isChecked();
-            parent.getPreferences().setMusicEnabled( enabled );
+            parent.getPreferences().setSoundEffectsEnabled( enabled );
             return false;
         });
 
@@ -117,6 +119,7 @@ public class SettingsScreen implements Screen {
 
 
         table.add(TitleLabel);
+        table.row().pad(20, 10, 20, 10); // Sets gap between table rows
         table.row();
         table.add(MusicSliderLabel);
         table.add(volumeMusicSlider);
