@@ -7,6 +7,8 @@ import io.github.NeonStudiosGame.screens.FirstScreen;
 import io.github.NeonStudiosGame.screens.GameScreen;
 import io.github.NeonStudiosGame.screens.SettingsScreen;
 
+import static io.github.NeonStudiosGame.AppPreferences.music;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class UniSim extends Game {
 
@@ -35,6 +37,7 @@ public class UniSim extends Game {
     }
 
 
+
     public void changeScreen(int screen){
         switch(screen){ // Switch case which changes current screen based on selected INT value
             case MENU:
@@ -53,6 +56,8 @@ public class UniSim extends Game {
     }
     @Override
     public void create() {
+        music.play();
+        music.setVolume(0.2f); // Sets the music to be quieter
         preferences = new AppPreferences();
         batch = new SpriteBatch();
         font = new BitmapFont();
@@ -60,6 +65,7 @@ public class UniSim extends Game {
 
 
         setScreen(new FirstScreen(this)); // Loads the first screen to be shown when the app opens
+        preferences.setFullscreenEnabled(false);
     }
 
     public void render() {
