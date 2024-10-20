@@ -1,0 +1,13 @@
+@startuml Class Diagram
+
+class Building {
+    +int capacity
+    +int size 
+}
+
+class Scenario {
+    int impact
+}
+
+[Building] -> [Scenario]
+@enduml
