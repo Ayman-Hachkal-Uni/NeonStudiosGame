@@ -23,7 +23,9 @@ public class GameScreen implements Screen {
     Stage stage;
     OrthographicCamera camera;
     TiledMap tiledMap;
-    TiledMapTileLayer layer;
+    TiledMapTileLayer grassLayer;
+    TiledMapTileLayer buildingLayer;
+    TiledMapTileLayer selector;
     float unitScale;
     OrthogonalTiledMapRenderer renderer;
     FitViewport viewport;
@@ -46,7 +48,9 @@ public class GameScreen implements Screen {
 
     public void generateMap(){
         tiledMap = new TmxMapLoader().load("DraftMap1.tmx");
-        layer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
+        grassLayer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
+        buildingLayer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
+        selector = (TiledMapTileLayer)tiledMap.getLayers().get(2);
         unitScale = 1/16f;
         renderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale);
 
@@ -71,7 +75,7 @@ public class GameScreen implements Screen {
             TiledMapTileLayer.Cell cell = this.getCell();
             if (cell != null) {
                 if (cell != hovered & hovered != null) {
-                    hovered.setTile(tiledMap.getTileSets().getTile(1));
+                    hovered.setTile(tiledMap.getTileSets().getTile(0));
                 }
                 cell.setTile(tiledMap.getTileSets().getTile(3));
                 hovered = cell;
@@ -79,7 +83,7 @@ public class GameScreen implements Screen {
         }
         else {
             if (hovered != null) {
-                hovered.setTile(tiledMap.getTileSets().getTile(1));
+                hovered.setTile(tiledMap.getTileSets().getTile(0));
                 hovered = null;
             }
         }
@@ -115,7 +119,7 @@ public class GameScreen implements Screen {
        int x = Gdx.input.getX();
        Vector2 vector = viewport.unproject(new Vector2(x,y));
        try {
-           TiledMapTileLayer.Cell cell = layer.getCell((int) vector.x, (int) vector.y);
+           TiledMapTileLayer.Cell cell = grassLayer.getCell((int) vector.x, (int) vector.y);
            return cell;
        } catch (Exception e) {
            return null;

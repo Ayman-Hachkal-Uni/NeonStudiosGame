@@ -2,12 +2,12 @@
 <tileset version="1.10" tiledversion="1.11.0" name="UniSimTileSet" tilewidth="16" tileheight="16" tilecount="3" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
-  <image source="Grass.jpg" width="16" height="16"/>
+  <image source="Grass.png" width="16" height="16"/>
  </tile>
  <tile id="1">
-  <image source="Water.jpg" width="16" height="16"/>
+  <image source="Water.png" width="16" height="16"/>
  </tile>
- <tile id="2">
-  <image source="SelectedCell.jpg" width="16" height="16"/>
+ <tile id="3">
+  <image source="Select.png" width="16" height="16"/>
  </tile>
 </tileset>
