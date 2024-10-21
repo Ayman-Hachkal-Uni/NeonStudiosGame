@@ -45,7 +45,7 @@ public class GameScreen implements Screen {
     }
 
     public void generateMap(){
-        tiledMap = new TmxMapLoader().load("UniSim/core/src/main/java/io/github/NeonStudiosGame/Map/DraftMap1.tmx");
+        tiledMap = new TmxMapLoader().load("DraftMap1.tmx");
         layer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
         unitScale = 1/16f;
         renderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale);
