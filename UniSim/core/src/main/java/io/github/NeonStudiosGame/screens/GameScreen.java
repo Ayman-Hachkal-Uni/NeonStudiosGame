@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
         if (buildMode) {
             TiledMapTileLayer.Cell cell = this.getCell();
             if (cell != null) {
-                if (cell != hovered & hovered != null){
+                if (cell != hovered & hovered != null) {
                     hovered.setTile(tiledMap.getTileSets().getTile(1));
                 }
                 cell.setTile(tiledMap.getTileSets().getTile(3));
