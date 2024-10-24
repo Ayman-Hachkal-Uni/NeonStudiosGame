@@ -1,31 +1,38 @@
-@startgantt Time Planning
-
+@startgantt
+printscale daily
 [Team Forming] requires 7 days
 [Project Brief] requires 3 days
 [Requirements] requires 7 days
-[Planning] requires 5 days
-[Architecture] requires 4 days
-[Test] requires 28 days
-[Code] requires 30 days
-[Documentation] requires 40 days
-
+[Planning] on {Everyone} requires 5 days
+[Architecture] requires 7 days 
 Project starts 2024-09-26
 
 [Team Forming] starts 2024-09-26
 [Project Brief] starts at 2024-09-30
 [Planning] starts at [Project Brief]'s end
-[Planning review 1] starts 2024-10-17
-[Planning review 2] starts 2024-10-24 
-[Planning review 3] starts 2024-10-31 
-[Planning review 4] starts 2024-11-07  
+[Planning review 1] on {James} starts 2024-10-17
+[Planning review 2] on {James} starts 2024-10-24 
+[Planning review 3] on {James} starts 2024-10-31 
+[Planning review 4] on {James} starts 2024-11-07  
 [Requirements] starts 2024-09-30
-[Architecture] starts at [Requirements]'s end
-[Code] starts at [Architecture]'s end
-[Test] starts 3 days after [Code]'s start
-[Documentation] ends 2024-11-11
-[Code Review 1] starts 2024-10-18
-[Code Review 2] starts 2024-10-25
-[Code Review 3] starts 2024-11-1
-[Code Review 4] starts 2024-11-8
+[Architecture] on {Everyone} starts at [Requirements]'s end
+
+[Code] on {Ayman}{Mackenzie}{Ben} starts at [Architecture]'s end and ends 2024-11-07
+[Code Review] as [CR1] starts 2024-10-17
+[Code Review] as [CR2] starts 2024-10-21
+[Code Plan] as [CP1] starts 2024-10-21
+[Code Review] as [CR3] starts 2024-10-24
+[Code Review] as [CR4] starts 2024-10-28
+[Code Plan] as [CP2] starts 2024-10-28
+[Code Review] as [CR5] starts 2024-10-31
+[Code Review] as [CR6] starts 2024-11-04
+[Code Plan] as [CP3] starts 2024-11-4
+[Code Review] as [CR7] starts 2024-11-7
+
+[Test] on {Rollo} starts 3 days after [Code]'s start and ends 2024-11-10
+
+[Game Logic] on {Matthew} starts 2024-10-17 and ends 2024-10-24
+
+[Documentation] on {Oliver} starts 2024-10-01 and ends 2024-11-11
 
 @endgantt
