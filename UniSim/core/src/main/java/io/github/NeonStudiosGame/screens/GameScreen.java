@@ -5,62 +5,137 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.BuildMaster.BuildMaster;
+import io.github.NeonStudiosGame.Hud.Hud;
 import io.github.NeonStudiosGame.UniSim;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.ArrayList;
 
+/**
+ * The type Game screen.
+ */
 public class GameScreen implements Screen {
-    //The main game instance
+    /**
+     * The Uni sim.
+     */
+//The main game instance
     final UniSim uniSim;
-    //Stage for future UI
+    /**
+     * The Stage.
+     */
+//Stage for future UI
     Stage stage;
-    //Camera that projects map onto the window
+    /**
+     * The Camera.
+     */
+//Camera that projects map onto the window
     OrthographicCamera camera;
-    //the map that will later be loaded
+    /**
+     * The Tiled map.
+     */
+//the map that will later be loaded
     TiledMap tiledMap;
-    //Background layer (index 0)
+    /**
+     * The Grass layer.
+     */
+//Background layer (index 0)
     TiledMapTileLayer grassLayer;
-    //Buildings layer (index 1)
+    /**
+     * The Building layer.
+     */
+//Buildings layer (index 1)
     TiledMapTileLayer buildingLayer;
-    //Selecting Layer that shows what tile is selected (index 2)
+    /**
+     * The Selector.
+     */
+//Selecting Layer that shows what tile is selected (index 2)
     TiledMapTileLayer selector;
-    //Unit scale of 1/16f
+    /**
+     * The Unit scale.
+     */
+//Unit scale of 1/16f
     float unitScale;
-    //renders the map
+    /**
+     * The Renderer.
+     */
+//renders the map
     OrthogonalTiledMapRenderer renderer;
-    //fitviewport sets the map to be a 16:9 aspect ratio
+    /**
+     * The Viewport.
+     */
+//fitviewport sets the map to be a 16:9 aspect ratio
     FitViewport viewport;
+    /**
+     * The Build mode.
+     */
+//fitviewport for UI
     //buildMode toggle
     boolean buildMode;
-    //reference to buildmaster that will handle build placement
+    /**
+     * The Build.
+     */
+//reference to buildmaster that will handle build placement
     BuildMaster build;
+    /**
+     * The Hovered.
+     */
     TiledMapTileLayer.Cell hovered;
-    //Remembers the last hovered tile
+    /**
+     * The Hud.
+     */
+//Remembers the last hovered tile
+    Hud hud;
+    /**
+     * The Game time.
+     */
+    float gameTime;
+    /**
+     * The Current hovered cell.
+     */
+    TiledMapTileLayer.Cell currentHoveredCell;
+    /**
+     * The Current mouse pos x.
+     */
+    int currentMousePosX;
+    /**
+     * The Current mouse pox y.
+     */
+    int currentMousePoxY;
+
+    /**
+     * Instantiates a new Game screen.
+     *
+     * @param uniSim the uni sim
+     */
     public GameScreen(UniSim uniSim){
         this.uniSim = uniSim;
+        gameTime = 0;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 32, 18);
+        camera.setToOrtho(false, 640, 360);
         viewport = new FitViewport(32, 18, camera);
+
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
+        hud = new Hud(uniSim.batch);
         //loads the map and layers
         generateMap();
         //sets buildmode false (Later will change)
         buildMode = false;
         build = new BuildMaster();
+
     }
 
+    /**
+     * Generate map.
+     */
     public void generateMap(){
         tiledMap = new TmxMapLoader().load("DraftMap1.tmx");
         grassLayer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
@@ -72,6 +147,7 @@ public class GameScreen implements Screen {
     }
     @Override
     public void show() {
+
     }
 
     @Override
@@ -84,14 +160,26 @@ public class GameScreen implements Screen {
         renderer.setView(camera);
         renderer.render();
 
+        hud.stage.draw();
+
         //toggles buildmode on and off
         if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
             buildMode = !buildMode;
+            if (buildMode) {
+                hud.showBuildMode();
+            }
+            else {
+                hud.hideBuildMode();
+            }
         }
 
         if (buildMode) {
             //Updates the hovered cell when build mode True
             this.UpdateHover();
+            //If mouse button is pressed when in build mode place building
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                placeBuilding(hud.buildButtons.getCheckedIndex());
+            }
         }
         else {
             //IMPORTANT makes sure that after buildmode is off it removes the last hovered cell
@@ -104,11 +192,17 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
+        if (!hud.isPaused()) {
+            gameTime +=  Gdx.graphics.getDeltaTime();
+        }
+        hud.updateTime(gameTime);
+
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
+        hud.viewport.update(width, height);
     }
 
     @Override
@@ -130,6 +224,10 @@ public class GameScreen implements Screen {
     public void dispose() {
         stage.dispose();
     }
+
+    /**
+     * Updated the hovered cell to show whether a building can be placed or not
+     */
     private void UpdateHover() {
         //Gets x,y coord of mouse
         int y = Gdx.input.getY();
@@ -137,6 +235,9 @@ public class GameScreen implements Screen {
 
         //Unprojects (complicated word for converts) x,y coords to the map coords
         Vector2 vector = viewport.unproject(new Vector2(x,y));
+
+        currentMousePosX = (int) vector.x;
+        currentMousePoxY = (int) vector.y;
 
         //Gets the selector layer cell
         TiledMapTileLayer.Cell cell = this.getCell((int) vector.x, (int) vector.y);
@@ -158,7 +259,7 @@ public class GameScreen implements Screen {
             }
         }
         else {
-            if (cell != null) {
+            if (cell!= null) {
                 if (cell != hovered & hovered != null) {
                     hovered.setTile(tiledMap.getTileSets().getTile(5));
                 }
@@ -171,20 +272,38 @@ public class GameScreen implements Screen {
     private TiledMapTileLayer.Cell getCell(int x, int y){
        try {
            //Gets the selector cell with x, y coords and returns
-           TiledMapTileLayer.Cell cell = selector.getCell(x, y);
-           return cell;
+           return selector.getCell(x, y);
        } catch (Exception e) {
            //error if no do this :(
            return null;
        }
     }
+
+    /**
+     * Checks if the building layer has a cell already there
+     * @param unprojectedX the mouse X position unprojected
+     * @param unprojectedY the mouse Y position unprojected
+     * @return returns if there is a cell
+     */
     private boolean CheckIfBuilding(int unprojectedX, int unprojectedY) {
         //simple boolean to check if cell is 0 or not
-        if (buildingLayer.getCell(unprojectedX, unprojectedY) == null) {
-            return false;
-        }
-        else {
+        return buildingLayer.getCell(unprojectedX, unprojectedY) != null;
+    }
+
+    /**
+     * This is where the buildings will be placed, logic is not done yet however visually buildings can be placed
+     * @param buildingIndex the id of the building selected in the HUD
+     * @return if building was placed successfully
+     */
+    private boolean placeBuilding (int buildingIndex) {
+        //Code here to set in graph the cell for the MATH
+
+        //Code here to show map changes
+        if (hovered != null && !CheckIfBuilding(currentMousePosX, currentMousePoxY)) {
+            buildingLayer.setCell(currentMousePosX, currentMousePoxY, new TiledMapTileLayer.Cell());
+            buildingLayer.getCell(currentMousePosX, currentMousePoxY).setTile(tiledMap.getTileSets().getTile(buildingIndex + 7));
             return true;
         }
+        else return false;
     }
 }

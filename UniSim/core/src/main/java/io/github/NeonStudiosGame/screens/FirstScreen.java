@@ -28,11 +28,6 @@ public class FirstScreen implements Screen {
 
     private final Image logo;
 
-
-
-
-
-
     public FirstScreen (UniSim UniSim) {
         parent = UniSim; // Used for purposes such as switching screens
         stage = new Stage(new FitViewport(640f, 360f)); // Creates a new stage object for the current screen
