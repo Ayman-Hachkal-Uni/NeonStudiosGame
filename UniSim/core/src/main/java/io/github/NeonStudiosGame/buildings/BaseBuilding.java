@@ -9,7 +9,7 @@ import java.io.Console;
 public class BaseBuilding {
     static String buildingsFolder = "buildings/";
     protected int[] position;
-    protected int timeToBuild = 0;
+    protected int timeToBuild;
     protected String buildingTextureLocation = buildingsFolder + "PLACEHOLDER.png";
     public static void main(String[] args) {
     }
@@ -21,6 +21,7 @@ public class BaseBuilding {
      */
     public BaseBuilding(int[] position) {
         this.position = position;
+        this.timeToBuild = 0;
     }
 
     /**

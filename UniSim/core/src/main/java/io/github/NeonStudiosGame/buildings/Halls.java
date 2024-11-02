@@ -9,7 +9,7 @@ public class Halls extends BaseBuilding{
      */
     public Halls(int[] position) {
         super(position);
-        this.timeToBuild = 30;
+        this.timeToBuild = 3;//0;
         this.buildingTextureLocation = buildingsFolder + "halls.png";
     }
 

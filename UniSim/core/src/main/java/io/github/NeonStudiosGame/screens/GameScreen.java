@@ -9,12 +9,15 @@ import com.badlogic.gdx.maps.tiled.*;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.BuildMaster.BuildMaster;
 import io.github.NeonStudiosGame.Hud.Hud;
 import io.github.NeonStudiosGame.UniSim;
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.github.NeonStudiosGame.buildings.*;
+import io.github.NeonStudiosGame.timer.Timer;
+
+import java.util.Arrays;
 
 
 /**
@@ -83,6 +86,10 @@ public class GameScreen implements Screen {
 //reference to buildmaster that will handle build placement
     BuildMaster build;
     /**
+     * The io.github.NeonStudiosGame.Timer.Timer.
+     */
+    Timer timer;
+    /**
      * The Hovered.
      */
     TiledMapTileLayer.Cell hovered;
@@ -104,9 +111,9 @@ public class GameScreen implements Screen {
      */
     int currentMousePosX;
     /**
-     * The Current mouse pox y.
+     * The Current mouse pos y.
      */
-    int currentMousePoxY;
+    int currentMousePosY;
 
     /**
      * Instantiates a new Game screen.
@@ -123,14 +130,12 @@ public class GameScreen implements Screen {
 
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
-
         hud = new Hud(uniSim.batch);
+        timer = new Timer(this, hud, build);
         //loads the map and layers
         generateMap();
         //sets buildmode false (Later will change)
         buildMode = false;
-        build = new BuildMaster();
-
     }
 
     /**
@@ -140,6 +145,9 @@ public class GameScreen implements Screen {
         tiledMap = new TmxMapLoader().load("DraftMap1.tmx");
         grassLayer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
         buildingLayer = (TiledMapTileLayer)tiledMap.getLayers().get(1);
+        build = new BuildMaster(this);
+        build.setMapArray(buildingLayer);
+        build.setTimer(timer);
         selector = (TiledMapTileLayer)tiledMap.getLayers().get(2);
         unitScale = 1/16f;
         renderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale);
@@ -195,7 +203,7 @@ public class GameScreen implements Screen {
         if (!hud.isPaused()) {
             gameTime +=  Gdx.graphics.getDeltaTime();
         }
-        hud.updateTime(gameTime);
+        timer.updateTime(Gdx.graphics.getDeltaTime(), gameTime);
 
     }
 
@@ -237,7 +245,7 @@ public class GameScreen implements Screen {
         Vector2 vector = viewport.unproject(new Vector2(x,y));
 
         currentMousePosX = (int) vector.x;
-        currentMousePoxY = (int) vector.y;
+        currentMousePosY = (int) vector.y;
 
         //Gets the selector layer cell
         TiledMapTileLayer.Cell cell = this.getCell((int) vector.x, (int) vector.y);
@@ -295,15 +303,33 @@ public class GameScreen implements Screen {
      * @param buildingIndex the id of the building selected in the HUD
      * @return if building was placed successfully
      */
-    private boolean placeBuilding (int buildingIndex) {
-        //Code here to set in graph the cell for the MATH
-
-        //Code here to show map changes
-        if (hovered != null && !CheckIfBuilding(currentMousePosX, currentMousePoxY)) {
-            buildingLayer.setCell(currentMousePosX, currentMousePoxY, new TiledMapTileLayer.Cell());
-            buildingLayer.getCell(currentMousePosX, currentMousePoxY).setTile(tiledMap.getTileSets().getTile(buildingIndex + 7));
-            return true;
+    private void placeBuilding (int buildingIndex) {
+        if (build.createBuilding(new int[] {(int) (currentMousePosX),
+            (int) (currentMousePosY)}, BuildingEnum.values()[buildingIndex+1])) {
+            renderBuilding(buildingIndex, new int[] {currentMousePosX, currentMousePosY});
         }
-        else return false;
+
+    }
+
+    public void renderBuilding (int buildingIndex, int[] position) {
+        buildingLayer.setCell(position[0], position[1], new TiledMapTileLayer.Cell());
+        buildingLayer.getCell(position[0], position[1]).setTile(tiledMap.getTileSets().getTile(buildingIndex + 7));
+
+    }
+    public void renderFullyCompletedBuilding (BaseBuilding building) {
+        int x = building.getPosition()[0];
+        int y = building.getPosition()[1];
+        int buildingIndex = switch (building.getClass().toString()) {
+            case "Halls" -> 7;
+            case "Bar" -> 8;
+            case "LectureTheatre" -> 9;
+            case "Restaurant" -> 10;
+            case "Road" -> 11;
+            case "SportsHall" -> 12;
+            default -> 5;
+        };
+        //JUST TEMP WAY OF INDICATING A BUILDING BEING BUILT
+        buildingIndex++;
+        buildingLayer.getCell(x, y).setTile(tiledMap.getTileSets().getTile(buildingIndex));
     }
 }

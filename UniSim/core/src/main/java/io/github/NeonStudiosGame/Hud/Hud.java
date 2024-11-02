@@ -78,6 +78,10 @@ public class Hud {
      */
     ImageButton roadImageButton;
     /**
+     * The SportsHall image button.
+     */
+    ImageButton sportsHallImageButton;
+    /**
      * The Build buttons.
      */
     public ButtonGroup<ImageButton> buildButtons;
@@ -203,7 +207,7 @@ public class Hud {
         Texture sportsHallTexture = new Texture(Gdx.files.internal("buildings/sports_hall.png"));
         TextureRegion sportsHallRegion = new TextureRegion(sportsHallTexture);
         TextureRegionDrawable sportsHallRegionDrawable = new TextureRegionDrawable(sportsHallRegion);
-        ImageButton sportsHallImageButton = new ImageButton(sportsHallRegionDrawable);
+        sportsHallImageButton = new ImageButton(sportsHallRegionDrawable);
 
 
         //adding buidings image button to button group
