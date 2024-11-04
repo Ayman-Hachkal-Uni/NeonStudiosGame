@@ -1,5 +1,6 @@
 package io.github.NeonStudiosGame.BuildMaster;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import io.github.NeonStudiosGame.Scorer;
 import io.github.NeonStudiosGame.screens.GameScreen;
 import io.github.NeonStudiosGame.timer.BuildTask;
 import io.github.NeonStudiosGame.timer.Task;
@@ -15,10 +16,19 @@ public class BuildMaster {
     private BaseBuilding[][] mapArray;
     private final List<BaseBuilding> buildings;
     private GameScreen gameScreen;
+    private Scorer scorer;
 
     public BuildMaster(GameScreen gameScreen) {
         buildings = new LinkedList<>();
         this.gameScreen = gameScreen;
+    }
+
+    public boolean setScorer(Scorer scorer) {
+        if (this.scorer == null) {
+            this.scorer = scorer;
+            return true;
+        }
+        return false;
     }
 
     public boolean setTimer(Timer timer) {
@@ -69,20 +79,22 @@ public class BuildMaster {
             case RESTAURANT -> new Restaurant(position);
             case SPORTS_HALL -> new SportsHall(position);
         };
-        print(selection);
         if (mapArray[position[0]][position[1]] != null) {
             return false;
         }
 
 
-        Task buildingCreation = new BuildTask(building.getTimeToBuild() + timer.getGameTime(), building, gameScreen);
-        print(timer.getGameTime());
-        print(building.getTimeToBuild());
+        Task buildingCreation = new BuildTask(building.getTimeToBuild() + timer.getGameTime(), building, gameScreen, this);
         timer.scheduleTask(buildingCreation);
         mapArray[position[0]][position[1]] = building;
         return true;
     }
     public void completeConstruction(BaseBuilding building) {
         buildings.add(building);
+        gameScreen.renderFullyCompletedBuilding(building);
+
+        //TEMP EXAMPLE SCORE ADDED
+
+        scorer.addScore(200);
     }
 }

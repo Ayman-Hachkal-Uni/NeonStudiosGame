@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.BuildMaster.BuildMaster;
 import io.github.NeonStudiosGame.Hud.Hud;
+import io.github.NeonStudiosGame.Scorer;
 import io.github.NeonStudiosGame.UniSim;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.NeonStudiosGame.buildings.*;
@@ -120,6 +121,7 @@ public class GameScreen implements Screen {
      *
      * @param uniSim the uni sim
      */
+    Scorer scorer;
     public GameScreen(UniSim uniSim){
         this.uniSim = uniSim;
         gameTime = 0;
@@ -131,6 +133,7 @@ public class GameScreen implements Screen {
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
         hud = new Hud(uniSim.batch);
+        scorer = new Scorer(hud);
         timer = new Timer(this, hud, build);
         //loads the map and layers
         generateMap();
@@ -148,6 +151,7 @@ public class GameScreen implements Screen {
         build = new BuildMaster(this);
         build.setMapArray(buildingLayer);
         build.setTimer(timer);
+        build.setScorer(scorer);
         selector = (TiledMapTileLayer)tiledMap.getLayers().get(2);
         unitScale = 1/16f;
         renderer = new OrthogonalTiledMapRenderer(tiledMap, unitScale);

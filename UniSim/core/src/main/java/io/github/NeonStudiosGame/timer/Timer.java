@@ -52,7 +52,12 @@ public class Timer{
         List<Task> completedTasks = new ArrayList<>();
         for (Task task : scheduledTasks) {
             if (runningGameTime > task.timeToPerform) {
-                task.run();
+                try {
+                    task.run();
+                }
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 completedTasks.add(task);
             }
         }
