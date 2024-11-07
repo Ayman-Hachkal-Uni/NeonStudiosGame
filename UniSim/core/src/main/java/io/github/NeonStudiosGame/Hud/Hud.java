@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import io.github.NeonStudiosGame.UniSim;
 
 /**
  * The type Hud.
@@ -53,6 +56,9 @@ public class Hud {
      * The Summer progress bar.
      */
     ProgressBar summerProgressBar;
+    Label yearSeason;
+    int year;
+    String season;
     /**
      * The Play button.
      */
@@ -104,12 +110,14 @@ public class Hud {
      *
      * @param sb the sprite batch
      */
-    public Hud(SpriteBatch sb){
+    public Hud(SpriteBatch sb, UniSim uniSim){
         //Initial value for score
         score = 0;
         //Width and height of viewport and camera
         width = 1280;
         height = 720;
+        year = 1;
+        season = "S";
 
         viewport = new FitViewport(1280,720, new OrthographicCamera());
 
@@ -155,6 +163,8 @@ public class Hud {
         //adds it to a stack so they overlap
         progressBarStack.add(teachingYearProgressBar);
         progressBarStack.add(summerProgressBar);
+
+        yearSeason = new Label(String.format("%01d %s", year, season), skin);
 
         //Textures for the play and pause button
         Texture playTexture  = new Texture(Gdx.files.internal("Sprites/Play.png"));
@@ -221,7 +231,7 @@ public class Hud {
 
 
         //making top hud table
-        table.add(scoreLabel).pad(15);
+        table.add(scoreLabel).pad(15).left();
         table.add(timeLabel).pad(15).padLeft(60).expandX();
         table.add(playButton).pad(15).size(50, 50).expandX().align(Align.right);
         table.row();
@@ -333,4 +343,6 @@ public class Hud {
         teachingYearProgressBar.setVisible(false);
         summerProgressBar.setValue(time);
     }
+
+
 }

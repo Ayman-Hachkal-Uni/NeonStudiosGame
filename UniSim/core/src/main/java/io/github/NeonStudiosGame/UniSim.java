@@ -3,6 +3,7 @@ package io.github.NeonStudiosGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.NeonStudiosGame.screens.EndScreen;
 import io.github.NeonStudiosGame.screens.FirstScreen;
 import io.github.NeonStudiosGame.screens.GameScreen;
 import io.github.NeonStudiosGame.screens.SettingsScreen;
@@ -26,10 +27,12 @@ public class UniSim extends Game {
     private SettingsScreen SettingsScreen;
     private FirstScreen FirstScreen;
     private GameScreen GameScreen;
+    private EndScreen EndScreen;
 
     public final static int MENU = 0;
     public final static int SETTINGS = 1;
     public final static int GAME = 2;
+    public final static int END = 3;
 
     private AppPreferences preferences;
     public AppPreferences getPreferences() { // Called by the settings screen to load current settings
@@ -52,7 +55,12 @@ public class UniSim extends Game {
                 if(GameScreen == null) GameScreen = new GameScreen(this);
                 this.setScreen(GameScreen);
                 break;
+            case END:
+                if (EndScreen == null) EndScreen = new EndScreen(this);
+                this.setScreen(EndScreen);
+                break;
         }
+
     }
     @Override
     public void create() {

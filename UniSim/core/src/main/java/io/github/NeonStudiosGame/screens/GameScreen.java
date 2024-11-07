@@ -115,16 +115,17 @@ public class GameScreen implements Screen {
      * The Current mouse pos y.
      */
     int currentMousePosY;
-
     /**
      * Instantiates a new Game screen.
      *
      * @param uniSim the uni sim
      */
     Scorer scorer;
+    boolean endGame;
     public GameScreen(UniSim uniSim){
         this.uniSim = uniSim;
         gameTime = 0;
+        endGame = false;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 640, 360);
@@ -132,7 +133,7 @@ public class GameScreen implements Screen {
 
         stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
-        hud = new Hud(uniSim.batch);
+        hud = new Hud(uniSim.batch, this.uniSim);
         scorer = new Scorer(hud);
         timer = new Timer(this, hud, build);
         //loads the map and layers
@@ -174,6 +175,18 @@ public class GameScreen implements Screen {
 
         hud.stage.draw();
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
+        if (!hud.isPaused()) {
+            timer.updateTime(Gdx.graphics.getDeltaTime(), gameTime);
+        }
+        /*
+        if (gameTime >= 300) {
+
+        }
+         */
+
         //toggles buildmode on and off
         if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
             buildMode = !buildMode;
@@ -185,7 +198,7 @@ public class GameScreen implements Screen {
             }
         }
 
-        if (buildMode) {
+        if (buildMode & !hud.isPaused()) {
             //Updates the hovered cell when build mode True
             this.UpdateHover();
             //If mouse button is pressed when in build mode place building
@@ -200,14 +213,6 @@ public class GameScreen implements Screen {
                 hovered = null;
             }
         }
-        //Quick close to make life easy
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
-        }
-        if (!hud.isPaused()) {
-            gameTime +=  Gdx.graphics.getDeltaTime();
-        }
-        timer.updateTime(Gdx.graphics.getDeltaTime(), gameTime);
 
     }
 
@@ -336,4 +341,5 @@ public class GameScreen implements Screen {
         buildingIndex++;
         buildingLayer.getCell(x, y).setTile(tiledMap.getTileSets().getTile(buildingIndex));
     }
+
 }

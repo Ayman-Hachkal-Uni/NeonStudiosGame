@@ -56,6 +56,6 @@
   <image source="buildings/PLACEHOLDER.png" width="16" height="16"/>
  </tile>
  <tile id="13">
-  <image source="tree.png" width="16" height="16"/>
+  <image source="buildings/tree.png" width="16" height="16"/>
  </tile>
 </tileset>
