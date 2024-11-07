@@ -55,12 +55,28 @@ public class UniSim extends Game {
                 if(GameScreen == null) GameScreen = new GameScreen(this);
                 this.setScreen(GameScreen);
                 break;
+        }
+
+    }
+    public void changeScreen(int screen, Scorer scorer) {
+        switch(screen){ // Switch case which changes current screen based on selected INT value
+            case MENU:
+                if(FirstScreen == null) FirstScreen = new FirstScreen(this);
+                this.setScreen(FirstScreen);
+                break;
+            case SETTINGS:
+                if(SettingsScreen == null) SettingsScreen = new SettingsScreen(this);
+                this.setScreen(SettingsScreen);
+                break;
+            case GAME:
+                if(GameScreen == null) GameScreen = new GameScreen(this);
+                this.setScreen(GameScreen);
+                break;
             case END:
-                if (EndScreen == null) EndScreen = new EndScreen(this);
+                if (EndScreen == null) EndScreen = new EndScreen(this, scorer);
                 this.setScreen(EndScreen);
                 break;
         }
-
     }
     @Override
     public void create() {

@@ -64,6 +64,7 @@ public class FirstScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 parent.changeScreen(UniSim.GAME); // Changes screens to the game screen
+                stage.clear();
             }
         });
 

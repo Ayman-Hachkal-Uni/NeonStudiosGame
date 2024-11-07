@@ -1,8 +1,6 @@
 package io.github.NeonStudiosGame.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.*;
@@ -122,6 +120,7 @@ public class GameScreen implements Screen {
      */
     Scorer scorer;
     boolean endGame;
+    InputMultiplexer multiplexer;
     public GameScreen(UniSim uniSim){
         this.uniSim = uniSim;
         gameTime = 0;
@@ -132,8 +131,13 @@ public class GameScreen implements Screen {
         viewport = new FitViewport(32, 18, camera);
 
         stage = new Stage(viewport);
-        Gdx.input.setInputProcessor(stage);
         hud = new Hud(uniSim.batch, this.uniSim);
+
+        multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(hud.stage);
+        multiplexer.addProcessor(this.stage);
+        Gdx.input.setInputProcessor(multiplexer);
+
         scorer = new Scorer(hud);
         timer = new Timer(this, hud, build);
         //loads the map and layers
@@ -181,11 +185,11 @@ public class GameScreen implements Screen {
         if (!hud.isPaused()) {
             timer.updateTime(Gdx.graphics.getDeltaTime(), gameTime);
         }
-        /*
-        if (gameTime >= 300) {
+        if (gameTime >= 300 | Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            uniSim.changeScreen(UniSim.END, scorer);
+            stage.clear();
 
         }
-         */
 
         //toggles buildmode on and off
         if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
@@ -202,7 +206,7 @@ public class GameScreen implements Screen {
             //Updates the hovered cell when build mode True
             this.UpdateHover();
             //If mouse button is pressed when in build mode place building
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            if (Gdx.input.isButtonJustPressed((Input.Buttons.LEFT))) {
                 placeBuilding(hud.buildButtons.getCheckedIndex());
             }
         }
@@ -281,7 +285,7 @@ public class GameScreen implements Screen {
                     hovered.setTile(tiledMap.getTileSets().getTile(5));
                 }
                 // Tile 4 is a pinkSquare texture
-                cell.setTile(tiledMap.getTileSets().getTile(4));
+                cell.setTile(tiledMap.getTileSets().getTile(hud.buildButtons.getCheckedIndex() + 7));
                 hovered = cell;
             }
         }

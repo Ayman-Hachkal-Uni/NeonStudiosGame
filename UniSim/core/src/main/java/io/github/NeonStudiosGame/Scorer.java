@@ -18,4 +18,7 @@ public class Scorer {
         this.score += score;
         updateScoreUI();
     }
+    public int getScore() {
+        return score;
+    }
 }

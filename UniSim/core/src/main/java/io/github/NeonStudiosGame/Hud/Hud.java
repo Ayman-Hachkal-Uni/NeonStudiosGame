@@ -56,7 +56,6 @@ public class Hud {
      * The Summer progress bar.
      */
     ProgressBar summerProgressBar;
-    Label yearSeason;
     int year;
     String season;
     /**
@@ -117,12 +116,12 @@ public class Hud {
         width = 1280;
         height = 720;
         year = 1;
-        season = "S";
+        this.season = "S";
+
 
         viewport = new FitViewport(1280,720, new OrthographicCamera());
 
         stage = new Stage(viewport, sb);
-        Gdx.input.setInputProcessor(stage);
 
         //SKIN we are using which will be changed
         skin = new Skin(Gdx.files.internal("skin/vhs/skin/vhs-ui.json"));
@@ -153,6 +152,7 @@ public class Hud {
 
         //Time and score label
         timeLabel = new Label(String.format("Time: %03d", worldTime), skin);
+        timeLabel.setAlignment(Align.center);
         scoreLabel = new Label(String.format("Score: %07d", score), skin);
 
         //Progress bars for the time
@@ -163,8 +163,6 @@ public class Hud {
         //adds it to a stack so they overlap
         progressBarStack.add(teachingYearProgressBar);
         progressBarStack.add(summerProgressBar);
-
-        yearSeason = new Label(String.format("%01d %s", year, season), skin);
 
         //Textures for the play and pause button
         Texture playTexture  = new Texture(Gdx.files.internal("Sprites/Play.png"));
@@ -232,11 +230,13 @@ public class Hud {
 
         //making top hud table
         table.add(scoreLabel).pad(15).left();
-        table.add(timeLabel).pad(15).padLeft(60).expandX();
+        table.add(timeLabel).pad(15).expandX();
         table.add(playButton).pad(15).size(50, 50).expandX().align(Align.right);
         table.row();
-        table.add(progressBarStack).colspan(3).center();
+        table.add(progressBarStack).center().colspan(3).expandX();
         table.row();
+
+        table.debug();
 
         //BuildTable Properties;
         buildTable.defaults().padBottom(15).size(50,50);
@@ -266,6 +266,7 @@ public class Hud {
 
         sportsHallImageButton.getImage().setOrigin(Align.center);
         sportsHallImageButton.getImage().setFillParent(true);
+
 
     }
 
@@ -302,13 +303,16 @@ public class Hud {
     public void updateTime(float time) {
         long minute = (long) ((time % 3600) / 60);
         long seconds = (long) (time % 60);
-        timeLabel.setText(String.format("Time : %01d:%02d", minute, seconds));
+        year = (int) (time / 80);
+        timeLabel.setText(String.format("Time: %01d:%02d, Y/S: %01d:%s", minute, seconds, year, this.season));
         float season = (long) (time % 80);
         if (season <= 25) {
             updateSummerProgress(season);
+            this.season = "Summer";
         }
         else {
             updateTeachingProgress(season);
+            this.season = "Academic";
         }
     }
 
