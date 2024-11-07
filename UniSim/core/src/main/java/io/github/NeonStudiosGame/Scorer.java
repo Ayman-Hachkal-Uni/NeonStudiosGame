@@ -15,6 +15,7 @@ public class Scorer {
     }
 
     public void addScore(int score) {
+        System.out.println(score);
         this.score += score;
         updateScoreUI();
     }

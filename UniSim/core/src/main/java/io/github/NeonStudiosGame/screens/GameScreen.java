@@ -304,7 +304,7 @@ public class GameScreen implements Screen {
      * Checks if the building layer has a cell already there
      * @param unprojectedX the mouse X position unprojected
      * @param unprojectedY the mouse Y position unprojected
-     * @return returns if there is a cell
+     * @return returns true if there is a cell, false otherwise
      */
     private boolean CheckIfBuilding(int unprojectedX, int unprojectedY) {
         //simple boolean to check if cell is 0 or not
@@ -314,7 +314,6 @@ public class GameScreen implements Screen {
     /**
      * This is where the buildings will be placed, logic is not done yet however visually buildings can be placed
      * @param buildingIndex the id of the building selected in the HUD
-     * @return if building was placed successfully
      */
     private void placeBuilding (int buildingIndex) {
         if (build.createBuilding(new int[] {(int) (currentMousePosX),
@@ -326,13 +325,13 @@ public class GameScreen implements Screen {
 
     public void renderBuilding (int buildingIndex, int[] position) {
         buildingLayer.setCell(position[0], position[1], new TiledMapTileLayer.Cell());
-        buildingLayer.getCell(position[0], position[1]).setTile(tiledMap.getTileSets().getTile(buildingIndex + 7));
+        buildingLayer.getCell(position[0], position[1]).setTile(tiledMap.getTileSets().getTile(21));
 
     }
     public void renderFullyCompletedBuilding (BaseBuilding building) {
         int x = building.getPosition()[0];
         int y = building.getPosition()[1];
-        int buildingIndex = switch (building.getClass().toString()) {
+        int buildingIndex = switch (building.getClass().getSimpleName()) {
             case "Halls" -> 7;
             case "Bar" -> 8;
             case "LectureTheatre" -> 9;
@@ -341,8 +340,7 @@ public class GameScreen implements Screen {
             case "SportsHall" -> 12;
             default -> 5;
         };
-        //JUST TEMP WAY OF INDICATING A BUILDING BEING BUILT
-        buildingIndex++;
+
         buildingLayer.getCell(x, y).setTile(tiledMap.getTileSets().getTile(buildingIndex));
     }
 

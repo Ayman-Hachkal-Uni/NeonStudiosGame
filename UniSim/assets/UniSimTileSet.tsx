@@ -58,4 +58,7 @@
  <tile id="13">
   <image source="buildings/tree.png" width="16" height="16"/>
  </tile>
+<tile id="20">
+ <image source="buildings/under_construction.png" width="16" height="16"/>
+</tile>
 </tileset>

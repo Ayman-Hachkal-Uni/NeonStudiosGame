@@ -10,6 +10,9 @@ public class BaseBuilding {
     static String buildingsFolder = "buildings/";
     protected int[] position;
     protected int timeToBuild;
+    protected int score;
+    protected int modifier;
+    protected  int scoreFrequency;
     protected String buildingTextureLocation = buildingsFolder + "PLACEHOLDER.png";
     public static void main(String[] args) {
     }
@@ -22,6 +25,9 @@ public class BaseBuilding {
     public BaseBuilding(int[] position) {
         this.position = position;
         this.timeToBuild = 0;
+        this.score = 200;
+        this.modifier = 1;
+        this.scoreFrequency = 5;
     }
 
     /**
@@ -36,6 +42,14 @@ public class BaseBuilding {
 
     public int getTimeToBuild() {
         return timeToBuild;
+    }
+
+    public int getScore() {
+        return score * modifier;
+    }
+
+    public int getScoreFrequency() {
+        return scoreFrequency;
     }
 
     public String getBuildingTextureLocation() {

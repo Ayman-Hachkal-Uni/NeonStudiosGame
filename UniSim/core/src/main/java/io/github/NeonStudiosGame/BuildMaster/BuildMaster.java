@@ -3,6 +3,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import io.github.NeonStudiosGame.Scorer;
 import io.github.NeonStudiosGame.screens.GameScreen;
 import io.github.NeonStudiosGame.timer.BuildTask;
+import io.github.NeonStudiosGame.timer.BuildingScoreTask;
 import io.github.NeonStudiosGame.timer.Task;
 import io.github.NeonStudiosGame.timer.Timer;
 import io.github.NeonStudiosGame.buildings.*;
@@ -75,10 +76,13 @@ public class BuildMaster {
         BaseBuilding building = switch (selection) {
             case BASE_BUILDING -> new BaseBuilding(position);
             case HALLS -> new Halls(position);
+            case BAR -> new Bar(position);
             case LECTURE_THEATRE -> new LectureTheatre(position);
             case RESTAURANT -> new Restaurant(position);
+            case ROAD -> new Road(position);
             case SPORTS_HALL -> new SportsHall(position);
         };
+
         if (mapArray[position[0]][position[1]] != null) {
             return false;
         }
@@ -90,11 +94,18 @@ public class BuildMaster {
         return true;
     }
     public void completeConstruction(BaseBuilding building) {
-        buildings.add(building);
-        gameScreen.renderFullyCompletedBuilding(building);
+        try {
+            buildings.add(building);
+            gameScreen.renderFullyCompletedBuilding(building);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        //SET UP SCORE RECURRING TASK
+        if (!(building instanceof  Road || building instanceof  Tree || building instanceof  Lake)) {
+            BuildingScoreTask scoreTask = new BuildingScoreTask(timer.getGameTime(), building.getScore(), scorer, timer, building.getScoreFrequency(), building);
+            timer.scheduleTask(scoreTask);
+        }
 
-        //TEMP EXAMPLE SCORE ADDED
-
-        scorer.addScore(200);
     }
 }

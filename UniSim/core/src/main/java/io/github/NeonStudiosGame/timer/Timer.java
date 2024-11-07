@@ -14,6 +14,8 @@ public class Timer{
     float exactRealTime;
 
     List<Task> scheduledTasks;
+    List<Task> midRunningTasks;
+
 
     GameScreen gameScreen;
     Hud hud;
@@ -23,6 +25,8 @@ public class Timer{
         this.hud = hud;
         this.buildMaster = buildMaster;
         this.scheduledTasks = new ArrayList<>();
+        this.midRunningTasks = new ArrayList<>();
+
     }
 
     public float getGameTime() {
@@ -45,11 +49,13 @@ public class Timer{
     }
 
     public void scheduleTask(Task task) {
-        scheduledTasks.add(task);
+        midRunningTasks.add(task);
     }
 
     private void schedulerCheck() {
         List<Task> completedTasks = new ArrayList<>();
+        scheduledTasks.addAll(midRunningTasks);
+        midRunningTasks.clear();
         for (Task task : scheduledTasks) {
             if (runningGameTime > task.timeToPerform) {
                 try {
