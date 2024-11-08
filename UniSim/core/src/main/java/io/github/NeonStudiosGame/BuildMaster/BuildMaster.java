@@ -10,8 +10,10 @@ import io.github.NeonStudiosGame.timer.Task;
 import io.github.NeonStudiosGame.timer.Timer;
 import io.github.NeonStudiosGame.buildings.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 public class BuildMaster {
@@ -21,11 +23,17 @@ public class BuildMaster {
     private GameScreen gameScreen;
     private Scorer scorer;
     private MapGraph graph;
+    private Map<Class, Integer> counters;
 
     public BuildMaster(GameScreen gameScreen) {
         buildings = new LinkedList<>();
         this.gameScreen = gameScreen;
-
+        counters = new HashMap<>();
+        counters.put(Bar.class, 0);
+        counters.put(Halls.class, 0);
+        counters.put(LectureTheatre.class, 0);
+        counters.put(Restaurant.class, 0);
+        counters.put(SportsHall.class, 0);
     }
 
     public boolean setScorer(Scorer scorer) {
@@ -96,6 +104,7 @@ public class BuildMaster {
         if (mapArray[position[0]][position[1]] != null) {
             return false;
         }
+        counters.put(building.getClass(), counters.get(building.getClass()) + 1);
 
 
         Task buildingCreation = new BuildTask(building.getTimeToBuild() + timer.getGameTime(), building, gameScreen, this);
