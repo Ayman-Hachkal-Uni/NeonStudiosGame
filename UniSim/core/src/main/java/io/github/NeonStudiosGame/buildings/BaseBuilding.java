@@ -1,5 +1,7 @@
 package io.github.NeonStudiosGame.buildings;
 
+import io.github.NeonStudiosGame.BuildingNode;
+
 import java.io.Console;
 
 /**

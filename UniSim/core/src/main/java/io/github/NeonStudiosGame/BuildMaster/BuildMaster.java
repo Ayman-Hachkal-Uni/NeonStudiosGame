@@ -1,5 +1,7 @@
 package io.github.NeonStudiosGame.BuildMaster;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import io.github.NeonStudiosGame.BuildingNode;
+import io.github.NeonStudiosGame.MapGraph;
 import io.github.NeonStudiosGame.Scorer;
 import io.github.NeonStudiosGame.screens.GameScreen;
 import io.github.NeonStudiosGame.timer.BuildTask;
@@ -18,10 +20,12 @@ public class BuildMaster {
     private final List<BaseBuilding> buildings;
     private GameScreen gameScreen;
     private Scorer scorer;
+    private MapGraph graph;
 
     public BuildMaster(GameScreen gameScreen) {
         buildings = new LinkedList<>();
         this.gameScreen = gameScreen;
+
     }
 
     public boolean setScorer(Scorer scorer) {
@@ -55,9 +59,12 @@ public class BuildMaster {
     }
 
     public void setMapArray(TiledMapTileLayer layer) {
+        graph = new MapGraph(layer);
         mapArray = new BaseBuilding[layer.getWidth()][layer.getHeight()];
         for (int x = 0; x < layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
+                BuildingNode buildingNode = new BuildingNode(null);
+                graph.addNode(buildingNode, x, y);
                 TiledMapTileLayer.Cell cell = layer.getCell(x, y);
                 if (cell == null) {
                     mapArray[x][y] = null;
@@ -65,8 +72,11 @@ public class BuildMaster {
                 }
                 BaseBuilding building = getBuilding(cell.getTile().getId(), x, y);
                 mapArray[x][y] = building;
+                buildingNode.setBuilding(building);
+
             }
         }
+        graph.initConnections();
     }
 
     public void print(Object anything) {
@@ -94,13 +104,10 @@ public class BuildMaster {
         return true;
     }
     public void completeConstruction(BaseBuilding building) {
-        try {
-            buildings.add(building);
-            gameScreen.renderFullyCompletedBuilding(building);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        buildings.add(building);
+        gameScreen.renderFullyCompletedBuilding(building);
+
+        graph.updateBuilding(building);
         //SET UP SCORE RECURRING TASK
         if (!(building instanceof  Road || building instanceof  Tree || building instanceof  Lake)) {
             BuildingScoreTask scoreTask = new BuildingScoreTask(timer.getGameTime(), building.getScore(), scorer, timer, building.getScoreFrequency(), building);
