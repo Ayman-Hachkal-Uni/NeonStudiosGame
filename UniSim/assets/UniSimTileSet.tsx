@@ -71,18 +71,20 @@ height = "16" / >
     <image source="buildings/sports_hall.png" width="16" height="16"/>
 </tile>
 <tile id="12">
-    <image source="buildings/PLACEHOLDER.png" width="16" height="16"/>
-</tile>
-<tile id="13">
-    <image source="buildings/tree.png" width="16" height="16"/>
-</tile>
-<tile id="20">
-    <image source="buildings/under_construction.png" width="16" height="16"/>
-</tile>
-<tile id="14">
     <properties>
         <property name="BuildingID" type="int" value="6"/>
     </properties>
     <image source="buildings/bus_stop.png" width="16" height="16"/>
 </tile>
+<tile id="13">
+    <image source="buildings/tree.png" width="16" height="16"/>
+</tile>
+<tile id="14">
+    <image source="buildings/PLACEHOLDER.png" width="16" height="16"/>
+</tile>
+<tile id="20">
+    <image source="buildings/under_construction.png" width="16" height="16"/>
+</tile>
+
+
 </tileset>

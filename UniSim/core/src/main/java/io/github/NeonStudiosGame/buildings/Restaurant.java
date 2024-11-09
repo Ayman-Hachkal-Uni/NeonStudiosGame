@@ -9,7 +9,7 @@ public class Restaurant extends BoosterBuilding{
      */
     public Restaurant(int[] position) {
         super(position);
-        this.timeToBuild = 30;
+        this.timeToBuild = 3;
         this.buildingTextureLocation = buildingsFolder + "restaurant.png";
     }
 

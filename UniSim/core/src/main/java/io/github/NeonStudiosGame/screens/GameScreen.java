@@ -316,9 +316,15 @@ public class GameScreen implements Screen {
      * @param buildingIndex the id of the building selected in the HUD
      */
     private void placeBuilding (int buildingIndex) {
-        if (build.createBuilding(new int[] {(int) (currentMousePosX),
-            (int) (currentMousePosY)}, BuildingEnum.values()[buildingIndex+1])) {
-            renderBuilding(buildingIndex, new int[] {currentMousePosX, currentMousePosY});
+        System.out.println(buildingIndex);
+        try {
+            if (build.createBuilding(new int[]{(int) (currentMousePosX),
+                (int) (currentMousePosY)}, BuildingEnum.values()[buildingIndex + 1])) {
+                renderBuilding(buildingIndex, new int[]{currentMousePosX, currentMousePosY});
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -338,6 +344,7 @@ public class GameScreen implements Screen {
             case "Restaurant" -> 10;
             case "Road" -> 11;
             case "SportsHall" -> 12;
+            case "BusStop" -> 13;
             default -> 5;
         };
 

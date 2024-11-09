@@ -89,6 +89,7 @@ public class Hud {
     /**
      * The Build buttons.
      */
+    ImageButton busStopImageButton;
     public ButtonGroup<ImageButton> buildButtons;
 
     /**
@@ -217,6 +218,11 @@ public class Hud {
         TextureRegionDrawable sportsHallRegionDrawable = new TextureRegionDrawable(sportsHallRegion);
         sportsHallImageButton = new ImageButton(sportsHallRegionDrawable);
 
+        Texture busStopTexture = new Texture(Gdx.files.internal("buildings/bus_stop.png"));
+        TextureRegion busStopRegion = new TextureRegion(busStopTexture);
+        TextureRegionDrawable busStopRegionDrawable = new TextureRegionDrawable(busStopRegion);
+        busStopImageButton = new ImageButton(busStopRegionDrawable);
+
 
         //adding buidings image button to button group
         buildButtons = new ButtonGroup<>();
@@ -226,6 +232,7 @@ public class Hud {
         buildButtons.add(restaurantImageButton);
         buildButtons.add(roadImageButton);
         buildButtons.add(sportsHallImageButton);
+        buildButtons.add(busStopImageButton);
 
 
         //making top hud table
@@ -247,6 +254,7 @@ public class Hud {
         buildTable.add(restaurantImageButton);
         buildTable.add(roadImageButton);
         buildTable.add(sportsHallImageButton);
+        buildTable.add(busStopImageButton);
 
         //Allows the images to be transformable so we can change the size
         centralHallImageButton.getImage().setOrigin(Align.center);
@@ -266,6 +274,9 @@ public class Hud {
 
         sportsHallImageButton.getImage().setOrigin(Align.center);
         sportsHallImageButton.getImage().setFillParent(true);
+
+        busStopImageButton.getImage().setOrigin(Align.center);
+        busStopImageButton.getImage().setFillParent(true);
 
 
     }

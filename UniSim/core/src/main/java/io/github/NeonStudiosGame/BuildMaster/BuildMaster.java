@@ -59,7 +59,9 @@ public class BuildMaster {
             case 10 -> new Restaurant(new int[] {x,y});
             case 11 -> new Road(new int[] {x,y});
             case 12 -> new SportsHall(new int[] {x,y});
+            case 13 -> new BusStop(new int[] {x,y});
             case 14 -> new Tree(new int[] {x,y});
+
             default -> null;
         };
     }
@@ -98,6 +100,7 @@ public class BuildMaster {
             case RESTAURANT -> new Restaurant(position);
             case ROAD -> new Road(position);
             case SPORTS_HALL -> new SportsHall(position);
+            case BUS_STOP -> new BusStop(position);
         };
 
         if (mapArray[position[0]][position[1]] != null) {
@@ -117,15 +120,31 @@ public class BuildMaster {
         buildings.add(building);
         gameScreen.renderFullyCompletedBuilding(building);
 
+        for (BaseBuilding other : buildings) {
+            System.out.println("DISTANCE: " + graph.distanceBetween(graph.getNode(building), graph.getNode(other)));
+        }
         graph.updateBuilding(building);
+        BuildingNode node = graph.getNode(building);
+        if (building instanceof BusStop) {
+            for (BaseBuilding otherBuilding : buildings) {
+                if (otherBuilding != building && otherBuilding instanceof BusStop) {
+                    BuildingNode otherNode = graph.getNode(otherBuilding);
+                    node.addConnection(otherNode);
+                    otherNode.addConnection(node);
+                    print(otherNode.getConnections());
+                }
+            }
+        }
 
-        calcModifier(building);
         if (building instanceof BoosterBuilding) {
             for (BaseBuilding otherBuilding : buildings) {
-                if (otherBuilding != building) {
+                if (otherBuilding != building && !(otherBuilding instanceof Road)) {
                     calcModifier(otherBuilding);
                 }
             }
+        }
+        else if (!(building instanceof Road)) {
+            calcModifier(building);
         }
         //SET UP SCORE RECURRING TASK
         if (!(building instanceof  Road || building instanceof  Tree || building instanceof  Lake)) {
@@ -144,10 +163,13 @@ public class BuildMaster {
         BuildingNode buildingNode = graph.getNode(building);
         for (BaseBuilding otherBuilding : buildings) {
             if (otherBuilding != building &&
+                !(otherBuilding instanceof Road) &&
                 graph.distanceBetween(buildingNode, graph.getNode(otherBuilding)) <= debuffDistance) {
                 building.multModifier(debuffPotency);
+                otherBuilding.multModifier(debuffPotency);
             }
         }
+
     }
 
     private void addBooster(BaseBuilding building) {
@@ -164,7 +186,7 @@ public class BuildMaster {
             }
         }
         if (closestBooster != null && closestDist < Integer.MAX_VALUE) {
-            building.multModifier((float) baseBoost /closestDist);
+            building.multModifier(Math.max(1 + (float) baseBoost / closestDist, 1.1f));
         }
     }
 }

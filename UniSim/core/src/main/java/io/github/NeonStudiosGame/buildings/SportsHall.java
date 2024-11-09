@@ -9,7 +9,7 @@ public class SportsHall extends BoosterBuilding{
      */
     public SportsHall(int[] position) {
         super(position);
-        this.timeToBuild = 30;
+        this.timeToBuild = 3;
         this.buildingTextureLocation = buildingsFolder + "sports_hall.png";
     }
 
