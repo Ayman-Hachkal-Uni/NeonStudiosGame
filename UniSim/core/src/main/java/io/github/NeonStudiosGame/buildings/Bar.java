@@ -1,6 +1,6 @@
 package io.github.NeonStudiosGame.buildings;
 
-public class Bar extends BaseBuilding {
+public class Bar extends BoosterBuilding {
     public Bar(int[] position) {
         super(position);
         this.timeToBuild = 30;

@@ -10,10 +10,11 @@ import java.io.Console;
  */
 public class BaseBuilding {
     static String buildingsFolder = "buildings/";
+    public final float baseModifier = 1;
     protected int[] position;
     protected int timeToBuild;
     protected int score;
-    protected int modifier;
+    protected float modifier;
     protected  int scoreFrequency;
     protected String buildingTextureLocation = buildingsFolder + "PLACEHOLDER.png";
     public static void main(String[] args) {
@@ -28,7 +29,7 @@ public class BaseBuilding {
         this.position = position;
         this.timeToBuild = 0;
         this.score = 200;
-        this.modifier = 1;
+        this.modifier = baseModifier;
         this.scoreFrequency = 5;
     }
 
@@ -47,11 +48,19 @@ public class BaseBuilding {
     }
 
     public int getScore() {
-        return score * modifier;
+        return (int) (score * modifier);
     }
 
     public int getScoreFrequency() {
         return scoreFrequency;
+    }
+
+    public void multModifier(float modifier) {
+        this.modifier *= modifier;
+    }
+
+    public void resetModifier() {
+        this.modifier = baseModifier;
     }
 
     public String getBuildingTextureLocation() {

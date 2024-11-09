@@ -18,7 +18,11 @@ public class BuildingNode {
         traversable = checkTraversible(building);
     }
 
-    private boolean checkTraversible(BaseBuilding building) {
+    public void setTraversable(boolean traversable) {
+        this.traversable = traversable;
+    }
+
+    public boolean checkTraversible(BaseBuilding building) {
         if (building == null || !(building instanceof Road)) {
             return false;
         }

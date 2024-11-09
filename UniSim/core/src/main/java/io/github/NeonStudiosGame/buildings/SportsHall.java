@@ -1,6 +1,6 @@
 package io.github.NeonStudiosGame.buildings;
 
-public class SportsHall extends BaseBuilding{
+public class SportsHall extends BoosterBuilding{
     /**
      * This is the constructor for the SportsHall, just calls the constructor for BaseBuilding via super, and then sets the
      * time to build and texture locations to predetermined ones.

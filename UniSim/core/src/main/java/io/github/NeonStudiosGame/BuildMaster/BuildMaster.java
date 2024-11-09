@@ -17,23 +17,21 @@ import java.util.Map;
 
 
 public class BuildMaster {
+    private final int debuffDistance = 2;
+    private final float debuffPotency = 0.5f;
+    private final int baseBoost = 5;
     public Timer timer;
     private BaseBuilding[][] mapArray;
     private final List<BaseBuilding> buildings;
     private GameScreen gameScreen;
     private Scorer scorer;
     private MapGraph graph;
-    private Map<Class, Integer> counters;
+    private int counter;
 
     public BuildMaster(GameScreen gameScreen) {
         buildings = new LinkedList<>();
         this.gameScreen = gameScreen;
-        counters = new HashMap<>();
-        counters.put(Bar.class, 0);
-        counters.put(Halls.class, 0);
-        counters.put(LectureTheatre.class, 0);
-        counters.put(Restaurant.class, 0);
-        counters.put(SportsHall.class, 0);
+        this.counter = 0;
     }
 
     public boolean setScorer(Scorer scorer) {
@@ -90,6 +88,7 @@ public class BuildMaster {
     public void print(Object anything) {
         System.out.println(anything);
     }
+
     public boolean createBuilding(int[] position, BuildingEnum selection) {
         BaseBuilding building = switch (selection) {
             case BASE_BUILDING -> new BaseBuilding(position);
@@ -104,24 +103,68 @@ public class BuildMaster {
         if (mapArray[position[0]][position[1]] != null) {
             return false;
         }
-        counters.put(building.getClass(), counters.get(building.getClass()) + 1);
 
-
+        if (building instanceof BoosterBuilding || building instanceof Halls || building instanceof LectureTheatre) {
+            counter += 1;
+        }
         Task buildingCreation = new BuildTask(building.getTimeToBuild() + timer.getGameTime(), building, gameScreen, this);
         timer.scheduleTask(buildingCreation);
         mapArray[position[0]][position[1]] = building;
         return true;
     }
+
     public void completeConstruction(BaseBuilding building) {
         buildings.add(building);
         gameScreen.renderFullyCompletedBuilding(building);
 
         graph.updateBuilding(building);
+
+        calcModifier(building);
+        if (building instanceof BoosterBuilding) {
+            for (BaseBuilding otherBuilding : buildings) {
+                if (otherBuilding != building) {
+                    calcModifier(otherBuilding);
+                }
+            }
+        }
         //SET UP SCORE RECURRING TASK
         if (!(building instanceof  Road || building instanceof  Tree || building instanceof  Lake)) {
             BuildingScoreTask scoreTask = new BuildingScoreTask(timer.getGameTime(), building.getScore(), scorer, timer, building.getScoreFrequency(), building);
             timer.scheduleTask(scoreTask);
         }
+    }
 
+    private void calcModifier(BaseBuilding building) {
+        building.resetModifier();
+        addClosenessDebuff(building);
+        addBooster(building);
+    }
+
+    private void addClosenessDebuff(BaseBuilding building) {
+        BuildingNode buildingNode = graph.getNode(building);
+        for (BaseBuilding otherBuilding : buildings) {
+            if (otherBuilding != building &&
+                graph.distanceBetween(buildingNode, graph.getNode(otherBuilding)) <= debuffDistance) {
+                building.multModifier(debuffPotency);
+            }
+        }
+    }
+
+    private void addBooster(BaseBuilding building) {
+        BuildingNode buildingNode = graph.getNode(building);
+        BoosterBuilding closestBooster = null;
+        int closestDist = Integer.MAX_VALUE;
+        for (BaseBuilding otherBuilding : buildings) {
+            if (building != otherBuilding && otherBuilding instanceof BoosterBuilding) {
+                int dist = graph.distanceBetween(buildingNode, graph.getNode(otherBuilding));
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    closestBooster = (BoosterBuilding) otherBuilding;
+                }
+            }
+        }
+        if (closestBooster != null && closestDist < Integer.MAX_VALUE) {
+            building.multModifier((float) baseBoost /closestDist);
+        }
     }
 }

@@ -83,7 +83,6 @@ public class MapGraph {
             return;
         }
         if (root != dest) {
-            System.out.println(root.getBuilding());
             Set<BuildingNode> toVisitNext = new HashSet<>();
 
             for (BuildingNode neighbour : root.getConnections()) {

@@ -1,6 +1,6 @@
 package io.github.NeonStudiosGame.buildings;
 
-public class Restaurant extends BaseBuilding{
+public class Restaurant extends BoosterBuilding{
     /**
      * This is the constructor for the Restaurant, just calls the constructor for BaseBuilding via super, and then sets the
      * time to build and texture locations to predetermined ones.
