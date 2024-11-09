@@ -191,18 +191,23 @@ public class GameScreen implements Screen {
 
         }
 
+        hud.updateBuildingCounter(build.getCounter());
+
         //toggles buildmode on and off
         if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
-            buildMode = !buildMode;
-            if (buildMode) {
-                hud.showBuildMode();
-            }
-            else {
-                hud.hideBuildMode();
-            }
+            hud.buildMenu.toggle();
         }
 
-        if (buildMode & !hud.isPaused()) {
+        if (hud.buildMenu.isChecked()) {
+            hud.showBuildMode();
+        }
+        else {
+            hud.hideBuildMode();
+        }
+
+        buildMode = hud.buildMenu.isChecked();
+
+        if (hud.buildMenu.isChecked() & !hud.isPaused()) {
             //Updates the hovered cell when build mode True
             this.UpdateHover();
             //If mouse button is pressed when in build mode place building

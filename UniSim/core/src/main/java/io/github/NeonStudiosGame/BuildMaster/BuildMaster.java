@@ -167,4 +167,8 @@ public class BuildMaster {
             building.multModifier((float) baseBoost /closestDist);
         }
     }
+
+    public int getCounter() {
+        return counter;
+    }
 }
