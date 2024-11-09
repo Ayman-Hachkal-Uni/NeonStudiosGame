@@ -62,6 +62,12 @@ public class Hud {
      * The Play button.
      */
     ImageButton playButton;
+    /**
+     * The Central hall image button.
+     */
+    /**
+     * The Build buttons.
+     */
     public ButtonGroup<ImageButton> buildButtons;
     /**
      * The Table.
@@ -204,6 +210,12 @@ public class Hud {
         TextureRegionDrawable sportsHallRegionDrawable = new TextureRegionDrawable(sportsHallRegion);
         ImageButton sportImageButton = new ImageButton(sportsHallRegionDrawable);
 
+        Texture busStopTexture = new Texture(Gdx.files.internal("buildings/bus_stop.png"));
+        TextureRegion busStopRegion = new TextureRegion(busStopTexture);
+        TextureRegionDrawable busStopRegionDrawable = new TextureRegionDrawable(busStopRegion);
+        ImageButton busStopImageButton = new ImageButton(busStopRegionDrawable);
+
+
         //adding buidings image button to button group
         buildButtons = new ButtonGroup<>();
         buildButtons.add(hallImageButton);
@@ -212,6 +224,7 @@ public class Hud {
         buildButtons.add(restaurantImageButton);
         buildButtons.add(roadImageButton);
         buildButtons.add(sportImageButton);
+        buildButtons.add(busStopImageButton);
 
         //making top hud table
         table.add(scoreLabel).pad(15).left();
@@ -231,6 +244,7 @@ public class Hud {
         VerticalGroup restaurantVert = new VerticalGroup();
         VerticalGroup roadVert = new VerticalGroup();
         VerticalGroup sportVert = new VerticalGroup();
+        VerticalGroup busVert = new VerticalGroup();
 
         Label hallLabel = new Label("Hall", skin);
         hallLabel.setFontScale(0.5f);
@@ -244,6 +258,8 @@ public class Hud {
         roadLabel.setFontScale(0.5f);
         Label sportLabel = new Label("Sports", skin);
         sportLabel.setFontScale(0.5f);
+        Label busLabel = new Label("Bus Stop", skin);
+        busLabel.setFontScale(0.5f);
 
         closeBuildMenu = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Sprites/close.png")))));
 
@@ -253,9 +269,6 @@ public class Hud {
         closeAndOpenButtonGroup.add(closeBuildMenu);
         closeAndOpenButtonGroup.setMaxCheckCount(1);
         closeAndOpenButtonGroup.uncheckAll();
-
-        hallImageButton.getImage().setSize(50,50);
-        hallImageButton.getImage().setFillParent(true);
 
         hallVert.addActor(hallImageButton);
         hallVert.addActor(hallLabel);
@@ -274,9 +287,15 @@ public class Hud {
 
         sportVert.addActor(sportImageButton);
         sportVert.addActor(sportLabel);
+
+        busVert.addActor(busStopImageButton);
+        busVert.addActor(busLabel);
+
         //BuildTable Properties;
-        buildTable.defaults().padBottom(15).padLeft(20).padRight(20).size(50,50);
         //adding each building
+        buildTable.defaults().padBottom(15).padLeft(20).padRight(20).size(50,50);
+
+        //Allows the images to be transformable so we can change the size
         buildTable.add(closeBuildMenu).size(20,20).right().colspan(6).row();
         buildTable.add(hallVert);
         buildTable.add(barVert);
@@ -284,16 +303,35 @@ public class Hud {
         buildTable.add(restaurantVert);
         buildTable.add(roadVert);
         buildTable.add(sportVert);
-
+        buildTable.add(busVert);
 
         Pixmap bgPixmap = new Pixmap(1, 1, Pixmap.Format.RGB565);
         bgPixmap.setColor(Color.GRAY);
         TextureRegionDrawable tx = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
-        //buildTable.background(tx);
 
+        //buildTable.background(tx);
+        hallImageButton.getImage().setOrigin(Align.center);
+        hallImageButton.getImage().setFillParent(true);
+
+        barImageButton.getImage().setOrigin(Align.center);
+        barImageButton.getImage().setFillParent(true);
+
+        lectureImageButton.getImage().setOrigin(Align.center);
+        lectureImageButton.getImage().setFillParent(true);
+
+        restaurantImageButton.getImage().setOrigin(Align.center);
+        restaurantImageButton.getImage().setFillParent(true);
+
+        roadImageButton.getImage().setOrigin(Align.center);
+        roadImageButton.getImage().setFillParent(true);
+
+        sportImageButton.getImage().setOrigin(Align.center);
+        sportImageButton.getImage().setFillParent(true);
+
+        busStopImageButton.getImage().setOrigin(Align.center);
+        busStopImageButton.getImage().setFillParent(true);
 
     }
-
     /**
      * Hide build mode.
      */

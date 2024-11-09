@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.utils.compression.lzma.Base;
 import io.github.NeonStudiosGame.buildings.BaseBuilding;
+import io.github.NeonStudiosGame.buildings.BusStop;
 import io.github.NeonStudiosGame.screens.GameScreen;
 
 import java.util.*;

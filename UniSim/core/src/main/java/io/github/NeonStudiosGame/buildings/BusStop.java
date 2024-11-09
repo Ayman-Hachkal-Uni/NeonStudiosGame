@@ -1,6 +1,6 @@
 package io.github.NeonStudiosGame.buildings;
 
-public class BusStop extends BaseBuilding {
+public class BusStop extends Road {
 
     public BusStop(int[] position) {
         super(position);

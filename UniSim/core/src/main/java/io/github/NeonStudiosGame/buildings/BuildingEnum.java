@@ -7,5 +7,6 @@ public enum BuildingEnum {
     LECTURE_THEATRE,
     RESTAURANT,
     ROAD,
-    SPORTS_HALL
+    SPORTS_HALL,
+    BUS_STOP
 }

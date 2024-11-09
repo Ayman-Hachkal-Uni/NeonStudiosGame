@@ -1,6 +1,7 @@
 package io.github.NeonStudiosGame;
 
 import io.github.NeonStudiosGame.buildings.BaseBuilding;
+import io.github.NeonStudiosGame.buildings.BusStop;
 import io.github.NeonStudiosGame.buildings.Road;
 
 import java.util.ArrayList;
