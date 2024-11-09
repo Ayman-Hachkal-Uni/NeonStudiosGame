@@ -10,10 +10,7 @@ import io.github.NeonStudiosGame.timer.Task;
 import io.github.NeonStudiosGame.timer.Timer;
 import io.github.NeonStudiosGame.buildings.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class BuildMaster {
@@ -26,12 +23,22 @@ public class BuildMaster {
     private GameScreen gameScreen;
     private Scorer scorer;
     private MapGraph graph;
-    private int counter;
+    private int hallsCounter;
+    private int barsCounter;
+    private int lecturesCounter;
+    private int restaurantsCounter;
+    private int sportsCount;
+    private int busStopsCounter;
 
     public BuildMaster(GameScreen gameScreen) {
         buildings = new LinkedList<>();
         this.gameScreen = gameScreen;
-        this.counter = 0;
+        this.hallsCounter = 0;
+        this.barsCounter = 0;
+        this.lecturesCounter = 0;
+        this.restaurantsCounter = 0;
+        this.sportsCount = 0;
+        this.busStopsCounter = 0;
     }
 
     public boolean setScorer(Scorer scorer) {
@@ -107,9 +114,15 @@ public class BuildMaster {
             return false;
         }
 
-        if (building instanceof BoosterBuilding || building instanceof Halls || building instanceof LectureTheatre) {
-            counter += 1;
+        switch (selection) {
+            case HALLS -> hallsCounter++;
+            case BAR -> barsCounter++;
+            case LECTURE_THEATRE -> lecturesCounter++;
+            case RESTAURANT -> restaurantsCounter++;
+            case SPORTS_HALL -> sportsCount++;
+            case BUS_STOP -> busStopsCounter++;
         }
+
         Task buildingCreation = new BuildTask(building.getTimeToBuild() + timer.getGameTime(), building, gameScreen, this);
         timer.scheduleTask(buildingCreation);
         mapArray[position[0]][position[1]] = building;
@@ -190,7 +203,8 @@ public class BuildMaster {
         }
     }
 
-    public int getCounter() {
-        return counter;
+    public List<Integer> getCounter() {
+        List<Integer> arrayList = Arrays.asList(hallsCounter, barsCounter, lecturesCounter, restaurantsCounter, sportsCount, busStopsCounter);
+        return arrayList;
     }
 }

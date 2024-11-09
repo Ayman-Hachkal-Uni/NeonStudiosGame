@@ -195,7 +195,14 @@ public class GameScreen implements Screen {
 
         //toggles buildmode on and off
         if (Gdx.input.isKeyJustPressed(Input.Keys.B)) {
-            hud.buildMenu.toggle();
+            if (hud.buildMenu.isChecked()) {
+                hud.buildMenu.setChecked(false);
+                hud.closeBuildMenu.setChecked(true);
+            }
+            else {
+                hud.buildMenu.setChecked(true);
+                hud.closeBuildMenu.setChecked(false);
+            }
         }
 
         if (hud.buildMenu.isChecked()) {

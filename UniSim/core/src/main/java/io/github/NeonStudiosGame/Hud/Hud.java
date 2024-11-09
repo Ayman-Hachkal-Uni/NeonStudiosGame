@@ -1,9 +1,7 @@
 package io.github.NeonStudiosGame.Hud;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -84,9 +82,15 @@ public class Hud {
     Label buildingCounterLabel;
     Table buildToggleTable;
     public ImageButton buildMenu;
-    ImageButton closeBuildMenu;
+    public ImageButton closeBuildMenu;
 
-    ButtonGroup<ImageButton> closeAndOpenButtonGroup;
+    public ButtonGroup<ImageButton> closeAndOpenButtonGroup;
+    Label hallsCounter;
+    Label barsCounter;
+    Label lectureCounter;
+    Label restaurantCounter;
+    Label sportCounter;
+    Label busCounter;
     /**
      * Instantiates a new Hud.
      *
@@ -179,42 +183,116 @@ public class Hud {
         TextureRegion centralHallRegion = new TextureRegion(centralHallTexture);
         TextureRegionDrawable centralHallRegionDrawable = new TextureRegionDrawable(centralHallRegion);
         ImageButton hallImageButton = new ImageButton(centralHallRegionDrawable);
+        Image hallImage = new Image(centralHallRegionDrawable);
+        hallImageButton.setOrigin(Align.center);
+        hallImageButton.scaleBy(2,2);
+        hallImage.setOrigin(Align.center);
+        hallImage.scaleBy(0.6f,0.6f);
+
 
         //Bar
         Texture barTexture = new Texture(Gdx.files.internal("buildings/bar.png"));
         TextureRegion barRegion = new TextureRegion(barTexture);
         TextureRegionDrawable barRegionDrawable = new TextureRegionDrawable(barRegion);
         ImageButton barImageButton = new ImageButton(barRegionDrawable);
+        Image barImage = new Image(barRegionDrawable);
+        barImageButton.setOrigin(Align.center);
+        barImageButton.scaleBy(2,2);
+        barImage.setOrigin(Align.center);
+        barImage.scaleBy(0.6f,0.6f);
+
 
         //Lecture Theatre
         Texture lectureTheatreTexture = new Texture(Gdx.files.internal("buildings/lecture_theatre.png"));
         TextureRegion lectureTheatreRegion = new TextureRegion(lectureTheatreTexture);
         TextureRegionDrawable lectureTheatreRegionDrawable = new TextureRegionDrawable(lectureTheatreRegion);
         ImageButton lectureImageButton = new ImageButton(lectureTheatreRegionDrawable);
+        lectureImageButton.setOrigin(Align.center);
+        Image lectureImage = new Image(lectureTheatreRegionDrawable);
+        lectureImageButton.scaleBy(2,2);
+        lectureImage.setOrigin(Align.center);
+        lectureImage.scaleBy(0.6f,0.6f);
 
         //Restaurant
         Texture restaurantTextureTexture = new Texture(Gdx.files.internal("buildings/restaurant.png"));
         TextureRegion restaurantRegion = new TextureRegion(restaurantTextureTexture);
         TextureRegionDrawable restaurantRegionDrawable = new TextureRegionDrawable(restaurantRegion);
         ImageButton restaurantImageButton = new ImageButton(restaurantRegionDrawable);
+        Image restaurantImage = new Image(restaurantRegionDrawable);
+        restaurantImageButton.setOrigin(Align.center);
+        restaurantImageButton.scaleBy(2,2);
+        restaurantImage.setOrigin(Align.center);
+        restaurantImage.scaleBy(0.6f,0.6f);
 
         //Road
         Texture roadTextureTexture = new Texture(Gdx.files.internal("buildings/road.png"));
         TextureRegion roadRegion = new TextureRegion(roadTextureTexture);
         TextureRegionDrawable roadRegionDrawable = new TextureRegionDrawable(roadRegion);
         ImageButton roadImageButton = new ImageButton(roadRegionDrawable);
+        roadImageButton.setOrigin(Align.center);
+        roadImageButton.scaleBy(2,2);
 
         //Sports Hall
         Texture sportsHallTexture = new Texture(Gdx.files.internal("buildings/sports_hall.png"));
         TextureRegion sportsHallRegion = new TextureRegion(sportsHallTexture);
         TextureRegionDrawable sportsHallRegionDrawable = new TextureRegionDrawable(sportsHallRegion);
         ImageButton sportImageButton = new ImageButton(sportsHallRegionDrawable);
+        Image sportImage = new Image(sportsHallRegionDrawable);
+        sportImageButton.setOrigin(Align.center);
+        sportImageButton.scaleBy(2,2);
+        sportImage.setOrigin(Align.center);
+        sportImage.scaleBy(0.6f,0.6f);
 
         Texture busStopTexture = new Texture(Gdx.files.internal("buildings/bus_stop.png"));
         TextureRegion busStopRegion = new TextureRegion(busStopTexture);
         TextureRegionDrawable busStopRegionDrawable = new TextureRegionDrawable(busStopRegion);
         ImageButton busStopImageButton = new ImageButton(busStopRegionDrawable);
+        Image busStopImage = new Image(busStopRegionDrawable);
+        busStopImageButton.setOrigin(Align.center);
+        busStopImageButton.scaleBy(2,2);
+        busStopImage.setOrigin(Align.center);
+        busStopImage.scaleBy(0.6f,0.6f);
 
+        hallsCounter = new Label(": 0", skin);
+        barsCounter = new Label(": 0", skin);
+        lectureCounter = new Label(": 0", skin);
+        restaurantCounter = new Label(": 0", skin);
+        sportCounter = new Label(": 0", skin);
+        busCounter = new Label(": 0", skin);
+
+        HorizontalGroup hallHorizontalGroup = new HorizontalGroup();
+        HorizontalGroup barsHorizontalGroup = new HorizontalGroup();
+        HorizontalGroup lectureHorizontalGroup = new HorizontalGroup();
+        HorizontalGroup restaurantHorizontalGroup = new HorizontalGroup();
+        HorizontalGroup sportHorizontalGroup = new HorizontalGroup();
+        HorizontalGroup busStopHorizontalGroup = new HorizontalGroup();
+
+        VerticalGroup buildingCounterVerticleGroup = new VerticalGroup();
+
+        hallHorizontalGroup.addActor(hallImage);
+        hallHorizontalGroup.addActor(hallsCounter);
+
+        barsHorizontalGroup.addActor(barImage);
+        barsHorizontalGroup.addActor(barsCounter);
+
+        lectureHorizontalGroup.addActor(lectureImage);
+        lectureHorizontalGroup.addActor(lectureCounter);
+
+        restaurantHorizontalGroup.addActor(restaurantImage);
+        restaurantHorizontalGroup.addActor(restaurantCounter);
+
+        sportHorizontalGroup.addActor(sportImage);
+        sportHorizontalGroup.addActor(sportCounter);
+
+        busStopHorizontalGroup.addActor(busStopImage);
+        busStopHorizontalGroup.addActor(busCounter);
+
+        buildingCounterVerticleGroup.addActor(hallHorizontalGroup);
+        buildingCounterVerticleGroup.addActor(barsHorizontalGroup);
+        buildingCounterVerticleGroup.addActor(lectureHorizontalGroup);
+        buildingCounterVerticleGroup.addActor(restaurantHorizontalGroup);
+        buildingCounterVerticleGroup.addActor(sportHorizontalGroup);
+        buildingCounterVerticleGroup.addActor(busStopHorizontalGroup);
 
         //adding buidings image button to button group
         buildButtons = new ButtonGroup<>();
@@ -231,8 +309,8 @@ public class Hud {
         table.add(timeLabel).pad(15).expandX();
         table.add(playButton).pad(15).size(50, 50).expandX().align(Align.right);
         table.row();
-        table.add(buildingCounterLabel).left().pad(15);
-        table.add(progressBarStack).center();
+        table.add(buildingCounterVerticleGroup).left().pad(15);
+        table.add(progressBarStack).center().top();
         table.row();
 
 
@@ -295,8 +373,7 @@ public class Hud {
         //adding each building
         buildTable.defaults().padBottom(15).padLeft(20).padRight(20).size(50,50);
 
-        //Allows the images to be transformable so we can change the size
-        buildTable.add(closeBuildMenu).size(20,20).right().colspan(6).row();
+        buildTable.add(closeBuildMenu).size(20,20).right().colspan(7).row();
         buildTable.add(hallVert);
         buildTable.add(barVert);
         buildTable.add(lectureVert);
@@ -305,31 +382,14 @@ public class Hud {
         buildTable.add(sportVert);
         buildTable.add(busVert);
 
-        Pixmap bgPixmap = new Pixmap(1, 1, Pixmap.Format.RGB565);
-        bgPixmap.setColor(Color.GRAY);
-        TextureRegionDrawable tx = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
-
-        //buildTable.background(tx);
-        hallImageButton.getImage().setOrigin(Align.center);
-        hallImageButton.getImage().setFillParent(true);
-
-        barImageButton.getImage().setOrigin(Align.center);
-        barImageButton.getImage().setFillParent(true);
-
-        lectureImageButton.getImage().setOrigin(Align.center);
-        lectureImageButton.getImage().setFillParent(true);
-
-        restaurantImageButton.getImage().setOrigin(Align.center);
-        restaurantImageButton.getImage().setFillParent(true);
-
-        roadImageButton.getImage().setOrigin(Align.center);
-        roadImageButton.getImage().setFillParent(true);
-
-        sportImageButton.getImage().setOrigin(Align.center);
-        sportImageButton.getImage().setFillParent(true);
-
-        busStopImageButton.getImage().setOrigin(Align.center);
-        busStopImageButton.getImage().setFillParent(true);
+        //Allows the images to be transformable so we can change the size
+        hallImageButton.setTransform(true);
+        barImageButton.setTransform(true);
+        lectureImageButton.setTransform(true);
+        restaurantImageButton.setTransform(true);
+        roadImageButton.setTransform(true);
+        sportImageButton.setTransform(true);
+        busStopImageButton.setTransform(true);
 
     }
     /**
@@ -411,8 +471,13 @@ public class Hud {
         teachingYearProgressBar.setVisible(false);
         summerProgressBar.setValue(time);
     }
-    public void updateBuildingCounter(int count) {
-        buildingCounterLabel.setText(String.format("Buildings: %02d", count));
+    public void updateBuildingCounter(java.util.List<Integer> counters) {
+        hallsCounter.setText(String.format(" : %02d", counters.get(0)));
+        barsCounter.setText(String.format(" : %02d", counters.get(1)));
+        lectureCounter.setText(String.format(" : %02d", counters.get(2)));
+        restaurantCounter.setText(String.format(" : %02d", counters.get(3)));
+        sportCounter.setText(String.format(" : %02d", counters.get(4)));
+        busCounter.setText(String.format(" : %02d", counters.get(5)));
     }
 
 }
