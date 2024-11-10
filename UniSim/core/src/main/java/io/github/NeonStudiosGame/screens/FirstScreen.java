@@ -24,7 +24,7 @@ public class FirstScreen implements Screen {
     private final Texture background1;
     private final SpriteBatch batch;
     //float xMax, xCoordBg, xCoordBg2;
-    final int BG_SCROLL_SPEED = 20;
+    //final int BG_SCROLL_SPEED = 20;
 
     private final Image logo;
 
