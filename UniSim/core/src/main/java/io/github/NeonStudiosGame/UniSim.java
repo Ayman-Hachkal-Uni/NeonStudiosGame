@@ -52,7 +52,7 @@ public class UniSim extends Game {
                 this.setScreen(SettingsScreen);
                 break;
             case GAME:
-                if(GameScreen == null) GameScreen = new GameScreen(this);
+                GameScreen = new GameScreen(this);
                 this.setScreen(GameScreen);
                 break;
         }
@@ -73,7 +73,7 @@ public class UniSim extends Game {
                 this.setScreen(GameScreen);
                 break;
             case END:
-                if (EndScreen == null) EndScreen = new EndScreen(this, scorer);
+                EndScreen = new EndScreen(this, scorer);
                 this.setScreen(EndScreen);
                 break;
         }
