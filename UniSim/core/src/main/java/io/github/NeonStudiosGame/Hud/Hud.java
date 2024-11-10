@@ -61,7 +61,7 @@ public class Hud {
     /**
      * The Play button.
      */
-    ImageButton playButton;
+    public ImageButton playButton;
     /**
      * The Central hall image button.
      */
@@ -176,6 +176,7 @@ public class Hud {
         //sets textures as the checked state (so when pause is enabled)
         playButton.getStyle().checked = pauseTextureRegionDrawable;
         playButton.getStyle().imageChecked = pauseTextureRegionDrawable;
+        playButton.setChecked(true);
 
         buildingCounterLabel = new Label(String.format("Buildings: 0"), skin);
 
@@ -314,9 +315,6 @@ public class Hud {
         table.add(buildingCounterVerticleGroup).left().pad(15);
         table.add(progressBarStack).center().top();
         table.row();
-
-
-        table.debug();
 
         VerticalGroup hallVert = new VerticalGroup();
         VerticalGroup barVert = new VerticalGroup();

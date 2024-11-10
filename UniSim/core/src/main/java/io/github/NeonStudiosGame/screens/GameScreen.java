@@ -218,7 +218,7 @@ public class GameScreen implements Screen {
 
         buildMode = hud.buildMenu.isChecked();
 
-        if (hud.buildMenu.isChecked() & !hud.isPaused()) {
+        if (hud.buildMenu.isChecked()){
             //Updates the hovered cell when build mode True
             this.UpdateHover();
             //If mouse button is pressed when in build mode place building
@@ -360,6 +360,7 @@ public class GameScreen implements Screen {
 
     public void place() {
         if (buildMode) {
+            hud.playButton.setChecked(false);
             placeBuilding(hud.buildButtons.getCheckedIndex());
         }
     }
