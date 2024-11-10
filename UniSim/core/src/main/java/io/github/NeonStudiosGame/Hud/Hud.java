@@ -1,12 +1,14 @@
 package io.github.NeonStudiosGame.Hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -107,7 +109,7 @@ public class Hud {
 
         viewport = new FitViewport(1280,720, new OrthographicCamera());
 
-        stage = new Stage(viewport, sb);
+        stage = new Stage(viewport);
 
         //SKIN we are using which will be changed
         skin = new Skin(Gdx.files.internal("skin/vhs/skin/vhs-ui.json"));
@@ -479,5 +481,4 @@ public class Hud {
         sportCounter.setText(String.format(" : %02d", counters.get(4)));
         busCounter.setText(String.format(" : %02d", counters.get(5)));
     }
-
 }

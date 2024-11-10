@@ -71,5 +71,9 @@ public class Timer{
             scheduledTasks.remove(task);
         }
     }
+    public boolean setTimer(float time) {
+        runningGameTime = time;
+        return true;
+    }
 
 }

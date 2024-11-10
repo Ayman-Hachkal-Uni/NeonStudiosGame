@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.BuildMaster.BuildMaster;
 import io.github.NeonStudiosGame.Hud.Hud;
+import io.github.NeonStudiosGame.InputHandler.MyGameInputProcessor;
+import io.github.NeonStudiosGame.InputHandler.MyUiInputProcessor;
 import io.github.NeonStudiosGame.Scorer;
 import io.github.NeonStudiosGame.UniSim;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -104,7 +106,6 @@ public class GameScreen implements Screen {
     /**
      * The Current hovered cell.
      */
-    TiledMapTileLayer.Cell currentHoveredCell;
     /**
      * The Current mouse pos x.
      */
@@ -130,12 +131,11 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 640, 360);
         viewport = new FitViewport(32, 18, camera);
 
+
         stage = new Stage(viewport);
         hud = new Hud(uniSim.batch, this.uniSim);
 
-        multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(hud.stage);
-        multiplexer.addProcessor(this.stage);
+        multiplexer = new InputMultiplexer(new MyUiInputProcessor(hud.stage), new  MyGameInputProcessor(this));
         Gdx.input.setInputProcessor(multiplexer);
 
         scorer = new Scorer(hud);
@@ -185,10 +185,14 @@ public class GameScreen implements Screen {
         if (!hud.isPaused()) {
             timer.updateTime(Gdx.graphics.getDeltaTime(), gameTime);
         }
-        if (gameTime >= 300 | Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-            uniSim.changeScreen(UniSim.END, scorer);
-            stage.clear();
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            timer.setTimer(290);
+        }
+
+        if (timer.getGameTime() >= 300) {
+            uniSim.dispose();
+            uniSim.changeScreen(UniSim.END, scorer);
         }
 
         hud.updateBuildingCounter(build.getCounter());
@@ -218,9 +222,6 @@ public class GameScreen implements Screen {
             //Updates the hovered cell when build mode True
             this.UpdateHover();
             //If mouse button is pressed when in build mode place building
-            if (Gdx.input.isButtonJustPressed((Input.Buttons.LEFT))) {
-                placeBuilding(hud.buildButtons.getCheckedIndex());
-            }
         }
         else {
             //IMPORTANT makes sure that after buildmode is off it removes the last hovered cell
@@ -361,6 +362,12 @@ public class GameScreen implements Screen {
         };
 
         buildingLayer.getCell(x, y).setTile(tiledMap.getTileSets().getTile(buildingIndex));
+    }
+
+    public void place() {
+        if (buildMode) {
+            placeBuilding(hud.buildButtons.getCheckedIndex());
+        }
     }
 
 }
