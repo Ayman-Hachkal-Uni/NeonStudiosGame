@@ -2,8 +2,10 @@ package io.github.NeonStudiosGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 
 public class AppPreferences {
@@ -15,6 +17,8 @@ public class AppPreferences {
     private static final String Settings_Large_Font = "Large_Font?";
     private static final String Settings_Name = "UniSim_Settings";
     private static final String Settings_Fullscreen = "Fullscreen_Enabled?";
+
+    Sound soundTest = Gdx.audio.newSound(Gdx.files.internal("game_pop_sound.wav"));
 
     /*
     This class is constructed of a list of getters and setters which are called by the
@@ -42,10 +46,13 @@ public class AppPreferences {
 
     public void setSoundVolume(float volume) {
         getSettings().putFloat(Settings_Sound_Vol, volume);
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            soundTest.play();
+        }
         getSettings().flush();
     }
 
-
+    /*
     public boolean isHighContrastEnabled() {
         return getSettings().getBoolean(Settings_High_Contrast, true);
     }
@@ -63,6 +70,8 @@ public class AppPreferences {
         getSettings().putBoolean(Settings_Large_Font, soundEffectsEnabled);
         getSettings().flush();
     }
+
+     */
     public boolean isFullscreenEnabled() {
         return getSettings().getBoolean(Settings_Fullscreen, true);
     }
