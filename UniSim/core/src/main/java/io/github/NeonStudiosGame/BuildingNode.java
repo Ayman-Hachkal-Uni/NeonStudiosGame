@@ -27,6 +27,7 @@ public class BuildingNode {
         if (building == null || !(building instanceof Road)) {
             return false;
         }
+
         return true;
     }
 

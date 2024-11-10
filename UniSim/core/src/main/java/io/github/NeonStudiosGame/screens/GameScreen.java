@@ -329,15 +329,9 @@ public class GameScreen implements Screen {
      * @param buildingIndex the id of the building selected in the HUD
      */
     private void placeBuilding (int buildingIndex) {
-        System.out.println(buildingIndex);
-        try {
-            if (build.createBuilding(new int[]{(int) (currentMousePosX),
-                (int) (currentMousePosY)}, BuildingEnum.values()[buildingIndex + 1])) {
-                renderBuilding(buildingIndex, new int[]{currentMousePosX, currentMousePosY});
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        if (build.createBuilding(new int[]{(int) (currentMousePosX),
+            (int) (currentMousePosY)}, BuildingEnum.values()[buildingIndex + 1])) {
+            renderBuilding(buildingIndex, new int[]{currentMousePosX, currentMousePosY});
         }
 
     }

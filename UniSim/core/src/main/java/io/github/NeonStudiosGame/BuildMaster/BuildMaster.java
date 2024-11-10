@@ -132,11 +132,8 @@ public class BuildMaster {
     public void completeConstruction(BaseBuilding building) {
         buildings.add(building);
         gameScreen.renderFullyCompletedBuilding(building);
-
-        for (BaseBuilding other : buildings) {
-            System.out.println("DISTANCE: " + graph.distanceBetween(graph.getNode(building), graph.getNode(other)));
-        }
         graph.updateBuilding(building);
+
         BuildingNode node = graph.getNode(building);
         if (building instanceof BusStop) {
             for (BaseBuilding otherBuilding : buildings) {
@@ -144,10 +141,14 @@ public class BuildMaster {
                     BuildingNode otherNode = graph.getNode(otherBuilding);
                     node.addConnection(otherNode);
                     otherNode.addConnection(node);
-                    print(otherNode.getConnections());
                 }
             }
         }
+
+// Gets Dist between all buildings from the constructed one and prints it
+//        for (BaseBuilding other : buildings) {
+//            System.out.println("DISTANCE between "+building.getClass().getSimpleName() + " and " + other.getClass().getSimpleName() + " is: " + graph.distanceBetween(graph.getNode(building), graph.getNode(other)));
+//        }
 
         if (building instanceof BoosterBuilding) {
             for (BaseBuilding otherBuilding : buildings) {

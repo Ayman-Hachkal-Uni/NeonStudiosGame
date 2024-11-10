@@ -1,11 +1,8 @@
 package io.github.NeonStudiosGame;
 
-import com.badlogic.gdx.Game;
+
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.utils.compression.lzma.Base;
 import io.github.NeonStudiosGame.buildings.BaseBuilding;
-import io.github.NeonStudiosGame.buildings.BusStop;
-import io.github.NeonStudiosGame.screens.GameScreen;
 
 import java.util.*;
 
@@ -60,7 +57,7 @@ public class MapGraph {
     }
 
     public int distanceBetween(BuildingNode a, BuildingNode b) {
-        Map<BuildingNode, Integer> distances = new HashMap<BuildingNode, Integer>();
+        Map<BuildingNode, Integer> distances = new HashMap<>();
         for (int x = 0; x < mapArray.length; x++) {
             for (BuildingNode node : mapArray[x]) {
                 if (a.getConnections().contains(node)) {
@@ -85,13 +82,10 @@ public class MapGraph {
         }
         if (root != dest) {
             Set<BuildingNode> toVisitNext = new HashSet<>();
-
             for (BuildingNode neighbour : root.getConnections()) {
-
-                if ((neighbour.isTraversable() || neighbour == dest) && unvisited.contains(neighbour)) {
-
+                if ((neighbour.isTraversable() || neighbour == dest)){
                     Integer distance = distances.get(root) + 1;
-                    distances.put(neighbour, Integer.max(distance, distances.get(dest) + 1));
+                    distances.put(neighbour, Integer.min(distance, distances.get(neighbour)));
                     toVisitNext.add(neighbour);
                 }
             }
