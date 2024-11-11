@@ -23,14 +23,13 @@ public class SettingsScreen implements Screen {
 
 
 
-    Sound soundTest = Gdx.audio.newSound(Gdx.files.internal("game_pop_sound.wav"));
 
 
     public SettingsScreen(UniSim UniSim) {
         parent = UniSim; // Sets the parent class (used to call preferences, switch screens)
         stage = new Stage(new FitViewport(640f, 360f));
         Gdx.input.setInputProcessor(stage);
-        settingsbg = new Texture(Gdx.files.internal("settingsbg.jpg"));
+        settingsbg = new Texture(Gdx.files.internal("SettingsBackground.png"));
         batch = new SpriteBatch();
 
     }
@@ -63,10 +62,10 @@ public class SettingsScreen implements Screen {
         soundSlider.setValue( parent.getPreferences().getSoundVolume());
         soundSlider.addListener(event -> {
             parent.getPreferences().setSoundVolume(soundSlider.getValue());
-            soundTest.play(soundSlider.getValue());
             return false;
         });
 
+        /*
         final CheckBox highContrastCheckbox = new CheckBox(null, skin);
         highContrastCheckbox.setChecked( parent.getPreferences().isHighContrastEnabled());
         highContrastCheckbox.addListener(event -> {
@@ -82,6 +81,8 @@ public class SettingsScreen implements Screen {
             parent.getPreferences().setLargeFontEnabled(enabled);
             return false;
         });
+
+         */
         final CheckBox fullscreenCheckbox = new CheckBox(null, skin);
         fullscreenCheckbox.setChecked( parent.getPreferences().isFullscreenEnabled());
         fullscreenCheckbox.addListener(event -> {
@@ -113,15 +114,18 @@ public class SettingsScreen implements Screen {
         table.add(volumeSliderLabel);
         table.add(soundSlider);
         table.row();
+        /*
         table.add(largeFontLabel);
         table.add(largeFontCheckbox);
         table.row();
         table.add(highContrastLabel);
         table.add(highContrastCheckbox);
-        table.add(backButton);
         table.row();
+
+         */
         table.add(fullscreenLabel);
         table.add(fullscreenCheckbox);
+        table.add(backButton);
 
     }
 

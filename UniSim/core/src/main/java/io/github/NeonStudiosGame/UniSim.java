@@ -81,8 +81,8 @@ public class UniSim extends Game {
     @Override
     public void create() {
         music.play();
-        music.setVolume(0.2f); // Sets the music to be quieter
         preferences = new AppPreferences();
+        preferences.setSoundVolume(0.2f);
         batch = new SpriteBatch();
         font = new BitmapFont();
         this.setScreen(new FirstScreen(this));

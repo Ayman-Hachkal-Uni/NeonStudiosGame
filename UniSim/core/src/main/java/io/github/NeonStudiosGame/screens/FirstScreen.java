@@ -21,22 +21,22 @@ public class FirstScreen implements Screen {
     private final UniSim parent; // Specifies our parent class
     private final Stage stage;
 
-    private final Texture background1, background2;
+    private final Texture background1;
     private final SpriteBatch batch;
-    float xMax, xCoordBg, xCoordBg2;
-    final int BG_SCROLL_SPEED = 20;
+    //float xMax, xCoordBg, xCoordBg2;
+    //final int BG_SCROLL_SPEED = 20;
 
     private final Image logo;
 
     public FirstScreen (UniSim UniSim) {
         parent = UniSim; // Used for purposes such as switching screens
         stage = new Stage(new FitViewport(640f, 360f)); // Creates a new stage object for the current screen
-        background1 = new Texture(Gdx.files.internal("uniyorkflip.jpg"));
-        background2 = new Texture(Gdx.files.internal("uniyork.jpg"));
-        xMax = 1500;
-        xCoordBg = xMax*(-1);
+        background1 = new Texture(Gdx.files.internal("Background.png"));
+        //background2 = new Texture(Gdx.files.internal("uniyork.jpg"));
+        //xMax = 1500;
+        //xCoordBg = xMax*(-1);
         batch = new SpriteBatch();
-        logo = new Image(new Texture(Gdx.files.internal("unisimlogotemp.jpg")));
+        logo = new Image(new Texture(Gdx.files.internal("UniSimTitleNew.png")));
     }
     @Override
     public void show() {
@@ -88,14 +88,14 @@ public class FirstScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        xCoordBg += BG_SCROLL_SPEED * Gdx.graphics.getDeltaTime();
-        xCoordBg2 = xCoordBg + xMax;  // We move the background, not the camera
-        if (xCoordBg >= 0) {
-            xCoordBg = xMax*(-1); xCoordBg2 = 0;
-        }
+        //xCoordBg += BG_SCROLL_SPEED * Gdx.graphics.getDeltaTime();
+        //xCoordBg2 = xCoordBg + xMax;  // We move the background, not the camera
+        //if (xCoordBg >= 0) {
+        //    xCoordBg = xMax*(-1); xCoordBg2 = 0;
+        //}
         batch.begin();
-        batch.draw(background1, xCoordBg, 0);
-        batch.draw(background2, xCoordBg2, 0);
+        batch.draw(background1, 0, 0);
+        //batch.draw(background2, xCoordBg2, 0);
         batch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // updates stage based on interaction
         stage.draw(); // Draws our "stage" to the screen
