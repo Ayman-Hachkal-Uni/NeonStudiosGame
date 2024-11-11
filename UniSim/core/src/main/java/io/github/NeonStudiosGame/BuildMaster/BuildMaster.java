@@ -280,13 +280,13 @@ public class BuildMaster {
         return Arrays.asList(counters.get(Halls.class),
             counters.get(Bar.class),
             counters.get(LectureTheatre.class),
-            counters.get(Road.class),
+            counters.get(Restaurant.class),
             counters.get(SportsHall.class),
             counters.get(BusStop.class),
             maxPerBuildingType.get(Halls.class),
             maxPerBuildingType.get(Bar.class),
             maxPerBuildingType.get(LectureTheatre.class),
-            maxPerBuildingType.get(Road.class),
+            maxPerBuildingType.get(Restaurant.class),
             maxPerBuildingType.get(SportsHall.class),
             maxPerBuildingType.get(BusStop.class));
     }

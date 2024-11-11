@@ -47,7 +47,7 @@ public class FirstScreen implements Screen {
         table.setDebug(false); // Used for testing; set this to TRUE to see button hitboxes
         stage.addActor(table); // Adds a table to our screen
 
-        Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json")); // PLACEHOLDER contains menu textures
+        Skin skin = new Skin(Gdx.files.internal("skin/vhs/skin/vhs-ui.json")); // PLACEHOLDER contains menu textures
         TextButton startGameButton = new TextButton("New Game", skin); // Interactive buttons
         TextButton settingsButton = new TextButton("Settings", skin);
         TextButton exitButton = new TextButton("Exit", skin);
