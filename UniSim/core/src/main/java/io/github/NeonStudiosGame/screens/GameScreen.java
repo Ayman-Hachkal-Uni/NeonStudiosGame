@@ -18,7 +18,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.NeonStudiosGame.buildings.*;
 import io.github.NeonStudiosGame.timer.Timer;
 
-import java.util.Arrays;
 
 
 /**
@@ -104,9 +103,6 @@ public class GameScreen implements Screen {
      */
     float gameTime;
     /**
-     * The Current hovered cell.
-     */
-    /**
      * The Current mouse pos x.
      */
     int currentMousePosX;
@@ -114,14 +110,15 @@ public class GameScreen implements Screen {
      * The Current mouse pos y.
      */
     int currentMousePosY;
+
+    Scorer scorer;
+    boolean endGame;
+    InputMultiplexer multiplexer;
     /**
      * Instantiates a new Game screen.
      *
      * @param uniSim the uni sim
      */
-    Scorer scorer;
-    boolean endGame;
-    InputMultiplexer multiplexer;
     public GameScreen(UniSim uniSim){
         this.uniSim = uniSim;
         gameTime = 0;
@@ -329,8 +326,8 @@ public class GameScreen implements Screen {
      * @param buildingIndex the id of the building selected in the HUD
      */
     private void placeBuilding (int buildingIndex) {
-        if (build.createBuilding(new int[]{(int) (currentMousePosX),
-            (int) (currentMousePosY)}, BuildingEnum.values()[buildingIndex + 1])) {
+        if (build.createBuilding(new int[]{currentMousePosX,
+            currentMousePosY}, BuildingEnum.values()[buildingIndex + 1])) {
             renderBuilding(buildingIndex, new int[]{currentMousePosX, currentMousePosY});
         }
 

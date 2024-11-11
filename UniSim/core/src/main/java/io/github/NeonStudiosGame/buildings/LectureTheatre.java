@@ -1,6 +1,6 @@
 package io.github.NeonStudiosGame.buildings;
 
-public class LectureTheatre extends BaseBuilding{
+public class LectureTheatre extends BaseBuilding {
     /**
      * This is the constructor for the LectureTheatre, just calls the constructor for BaseBuilding via super, and then sets the
      * time to build and texture locations to predetermined ones.
@@ -12,7 +12,4 @@ public class LectureTheatre extends BaseBuilding{
         this.timeToBuild = 30;
         this.buildingTextureLocation = buildingsFolder + "lecture_theatre.png";
     }
-
-
-
 }

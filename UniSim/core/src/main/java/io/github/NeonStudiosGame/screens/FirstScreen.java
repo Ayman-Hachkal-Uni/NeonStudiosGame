@@ -30,7 +30,8 @@ public class FirstScreen implements Screen {
 
     public FirstScreen (UniSim UniSim) {
         parent = UniSim; // Used for purposes such as switching screens
-        stage = new Stage(new FitViewport(640f, 360f)); // Creates a new stage object for the current screen
+        stage = new Stage(new FitViewport(640f, 360f)); // Creates a new stage object for the
+        // current screen
         background1 = new Texture(Gdx.files.internal("Background.png"));
         //background2 = new Texture(Gdx.files.internal("uniyork.jpg"));
         //xMax = 1500;

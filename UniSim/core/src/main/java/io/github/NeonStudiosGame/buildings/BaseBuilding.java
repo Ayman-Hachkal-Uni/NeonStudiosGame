@@ -1,9 +1,5 @@
 package io.github.NeonStudiosGame.buildings;
 
-import io.github.NeonStudiosGame.BuildingNode;
-
-import java.io.Console;
-
 /**
  * This is a class that should be the base building to be used in the NeonStudios Game. It stores data about the
  * building and interfaces with the Build master and map to allow users to place it.
@@ -47,6 +43,10 @@ public class BaseBuilding {
         return timeToBuild;
     }
 
+    /**
+     * Gets the score and modifier and returns their product, this should include all proximity buffs and debuffs.
+     * @return returns the rounded down integer of the product of these.
+     */
     public int getScore() {
         return (int) (score * modifier);
     }

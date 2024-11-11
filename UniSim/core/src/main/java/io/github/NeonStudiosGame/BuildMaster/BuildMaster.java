@@ -13,34 +13,53 @@ import io.github.NeonStudiosGame.buildings.*;
 import java.util.*;
 
 
+/**
+ * This class serves as the backend for the buildings and map. It interfaces with the GameScreen and Hud to receive
+ * requests and to send updates for them. It also interfaces with the scorer to handle score updates and the timer for
+ * scheduling these score updates and building constructions.
+ */
+@SuppressWarnings("rawtypes")
 public class BuildMaster {
     private final int debuffDistance = 2;
     private final float debuffPotency = 0.5f;
-    private final int baseBoost = 5;
     public Timer timer;
     private BaseBuilding[][] mapArray;
     private final List<BaseBuilding> buildings;
-    private GameScreen gameScreen;
+    private final GameScreen gameScreen;
     private Scorer scorer;
     private MapGraph graph;
-    private int hallsCounter;
-    private int barsCounter;
-    private int lecturesCounter;
-    private int restaurantsCounter;
-    private int sportsCount;
-    private int busStopsCounter;
+    private int currentlyBuilding;
+    private final int maxBuildsAtOnce = 2;
+    private final Map<Class, Integer> counters;
+    private final Map<Class, Integer> maxPerBuildingType;
 
+    /**
+     * The constructor for the build master. This sets an empty LinkedList for the buildings List, sets the game screen
+     * to the one specified, sets the amount of buildings currently being built to zero, initalises the
+     * maxPerBuildingType map to the numbers hard-coded here, and initialises the counters to 0;
+      * @param gameScreen This specifies the gameScreen that the BuildMaster will interface with to update the UI.
+     */
     public BuildMaster(GameScreen gameScreen) {
         buildings = new LinkedList<>();
         this.gameScreen = gameScreen;
-        this.hallsCounter = 0;
-        this.barsCounter = 0;
-        this.lecturesCounter = 0;
-        this.restaurantsCounter = 0;
-        this.sportsCount = 0;
-        this.busStopsCounter = 0;
+        this.currentlyBuilding = 0;
+        this.maxPerBuildingType = new HashMap<>();
+        this.maxPerBuildingType.put(Bar.class, 2);
+        this.maxPerBuildingType.put(BusStop.class, 3);
+        this.maxPerBuildingType.put(Halls.class, 4);
+        this.maxPerBuildingType.put(LectureTheatre.class, 4);
+        this.maxPerBuildingType.put(Restaurant.class, 2);
+        this.maxPerBuildingType.put(SportsHall.class, 2);
+        this.maxPerBuildingType.put(Road.class, 15);
+        this.counters = new HashMap<>(Map.copyOf(maxPerBuildingType));
+        this.counters.replaceAll((k,v)->0);
     }
 
+    /**
+     * This is used to set the scorer to be used by the BuildMaster, it can only be set once.
+     * @param scorer The scorer to assign to the BuildMaster.
+     * @return a boolean representing whether the scorer was set.
+     */
     public boolean setScorer(Scorer scorer) {
         if (this.scorer == null) {
             this.scorer = scorer;
@@ -49,6 +68,11 @@ public class BuildMaster {
         return false;
     }
 
+    /**
+     * This is used to set the timer to be used by the BuildMaster, it can only be set once.
+     * @param timer The timer to assign to the BuildMaster.
+     * @return a boolean representing whether the timer was set.
+     */
     public boolean setTimer(Timer timer) {
         if (this.timer == null) {
             this.timer = timer;
@@ -57,6 +81,13 @@ public class BuildMaster {
         return false;
     }
 
+    /**
+     * Used locally by this class to create a building of a given id (representing subclass) and position
+     * @param id the id that represents the subclass of the building object to create.
+     * @param x the x coordinate of the cell that the building should be placed in.
+     * @param y the y coordinate of the cell that the building should be placed in.
+     * @return returns the new building object requested, or null if the id doesn't match anything.
+     */
     private BaseBuilding getBuilding(int id, int x, int y) {
         return switch (id) {
             case 2 -> new Lake(new int[] {x,y});
@@ -73,6 +104,11 @@ public class BuildMaster {
         };
     }
 
+    /**
+     * This is used to initialise the 2D array that stores the buildings relative to the map as well as the graph that
+     * represents the map and how it's connected.
+     * @param layer This is the tile layer to base the initial state of the map on.
+     */
     public void setMapArray(TiledMapTileLayer layer) {
         graph = new MapGraph(layer);
         mapArray = new BaseBuilding[layer.getWidth()][layer.getHeight()];
@@ -94,10 +130,14 @@ public class BuildMaster {
         graph.initConnections();
     }
 
-    public void print(Object anything) {
-        System.out.println(anything);
-    }
-
+    /**
+     * This creates a building with a given selection, it then checks if there is already a building in this spot or
+     * whether the build limits are reached, and then returns whether the building is kept as a boolean. It also
+     * schedules the building's final construction with the timer.
+     * @param position The array [x,y] specifying the cell position for the building to be built in.
+     * @param selection The enum corresponding to the class of building to make.
+     * @return a boolean representing if the building is made successfully.
+     */
     public boolean createBuilding(int[] position, BuildingEnum selection) {
         BaseBuilding building = switch (selection) {
             case BASE_BUILDING -> new BaseBuilding(position);
@@ -110,25 +150,32 @@ public class BuildMaster {
             case BUS_STOP -> new BusStop(position);
         };
 
-        if (mapArray[position[0]][position[1]] != null) {
+        if (mapArray[position[0]][position[1]] != null ||
+            (currentlyBuilding >= maxBuildsAtOnce && building.getTimeToBuild() != 0) ||
+            counters.get(building.getClass()) >= maxPerBuildingType.get(building.getClass())) {
             return false;
         }
 
-        switch (selection) {
-            case HALLS -> hallsCounter++;
-            case BAR -> barsCounter++;
-            case LECTURE_THEATRE -> lecturesCounter++;
-            case RESTAURANT -> restaurantsCounter++;
-            case SPORTS_HALL -> sportsCount++;
-            case BUS_STOP -> busStopsCounter++;
-        }
+        counters.put(building.getClass(), counters.get(building.getClass()) + 1);
 
-        Task buildingCreation = new BuildTask(building.getTimeToBuild() + timer.getGameTime(), building, gameScreen, this);
+        Task buildingCreation = new BuildTask(building.getTimeToBuild() + timer.getGameTime(),
+            building,
+            this);
         timer.scheduleTask(buildingCreation);
         mapArray[position[0]][position[1]] = building;
+        currentlyBuilding += 1;
         return true;
     }
 
+    /**
+     * To be called when a building is ready to be completed in its construction. It adds the building to the list of
+     * buildings and then requests the map to render the building as complete, it also then shows the map graph as
+     * having the given type of building in it, which is useful when building roads as opposed to other parts, so the
+     * graph knows what buildings are traversable. It also connects the bus stops together if one is built as well as
+     * applying all proximity boosters that need to be updated with the new construction. Finally, if applicable, it
+     * sets up the scoring task schedule with the timer.
+     * @param building The building to complete construction of.
+     */
     public void completeConstruction(BaseBuilding building) {
         buildings.add(building);
         gameScreen.renderFullyCompletedBuilding(building);
@@ -147,7 +194,12 @@ public class BuildMaster {
 
 // Gets Dist between all buildings from the constructed one and prints it
 //        for (BaseBuilding other : buildings) {
-//            System.out.println("DISTANCE between "+building.getClass().getSimpleName() + " and " + other.getClass().getSimpleName() + " is: " + graph.distanceBetween(graph.getNode(building), graph.getNode(other)));
+//            System.out.println("DISTANCE between " +
+//            building.getClass().getSimpleName() +
+//            " and " +
+//            other.getClass().getSimpleName() +
+//            " is: " +
+//            graph.distanceBetween(graph.getNode(building), graph.getNode(other)));
 //        }
 
         if (building instanceof BoosterBuilding) {
@@ -160,19 +212,33 @@ public class BuildMaster {
         else if (!(building instanceof Road)) {
             calcModifier(building);
         }
+        currentlyBuilding -= 1;
         //SET UP SCORE RECURRING TASK
         if (!(building instanceof  Road || building instanceof  Tree || building instanceof  Lake)) {
-            BuildingScoreTask scoreTask = new BuildingScoreTask(timer.getGameTime(), building.getScore(), scorer, timer, building.getScoreFrequency(), building);
+            BuildingScoreTask scoreTask = new BuildingScoreTask(timer.getGameTime(),
+                building.getScore(),
+                scorer,
+                timer,
+                building.getScoreFrequency(),
+                building);
             timer.scheduleTask(scoreTask);
         }
     }
 
+    /**
+     * To be used internally to recalculate a building's modifier whenever the gamestate changes to affect it
+     * @param building The building to recalculate the modifiers for.
+     */
     private void calcModifier(BaseBuilding building) {
         building.resetModifier();
         addClosenessDebuff(building);
         addBooster(building);
     }
 
+    /**
+     * Applies the necessary debuff to any building within the given range of other buildings.
+     * @param building The building to apply the closeness debuff to.
+     */
     private void addClosenessDebuff(BaseBuilding building) {
         BuildingNode buildingNode = graph.getNode(building);
         for (BaseBuilding otherBuilding : buildings) {
@@ -186,6 +252,12 @@ public class BuildMaster {
 
     }
 
+    /**
+     * Applies the necessary booster buffs to a building. It finds the closest booster building to the building
+     * specified and adds a multiplier to the specified building's modifier based on their proximity and the booster
+     * building's booster.
+     * @param building The building to apply the booster to. (Should be a non-booster building right now)
+     */
     private void addBooster(BaseBuilding building) {
         BuildingNode buildingNode = graph.getNode(building);
         BoosterBuilding closestBooster = null;
@@ -199,13 +271,17 @@ public class BuildMaster {
                 }
             }
         }
-        if (closestBooster != null && closestDist < Integer.MAX_VALUE) {
-            building.multModifier(Math.max(1 + (float) baseBoost / closestDist, 1.1f));
+        if (closestBooster != null) {
+            building.multModifier(Math.max(1 + (float) closestBooster.getBooster() / closestDist, 1.1f));
         }
     }
 
     public List<Integer> getCounter() {
-        List<Integer> arrayList = Arrays.asList(hallsCounter, barsCounter, lecturesCounter, restaurantsCounter, sportsCount, busStopsCounter);
-        return arrayList;
+        return Arrays.asList(counters.get(Halls.class),
+            counters.get(Bar.class),
+            counters.get(LectureTheatre.class),
+            counters.get(SportsHall.class),
+            counters.get(BusStop.class),
+            counters.get(Road.class));
     }
 }

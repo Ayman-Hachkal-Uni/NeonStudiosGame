@@ -1,5 +1,8 @@
 package io.github.NeonStudiosGame.buildings;
 
+/**
+ * Simple enum for the building classes
+ */
 public enum BuildingEnum {
     BASE_BUILDING,
     HALLS,

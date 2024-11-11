@@ -1,7 +1,6 @@
 package io.github.NeonStudiosGame.InputHandler;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import io.github.NeonStudiosGame.screens.GameScreen;
 
 public class MyGameInputProcessor implements InputProcessor {

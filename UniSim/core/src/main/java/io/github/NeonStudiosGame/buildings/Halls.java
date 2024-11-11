@@ -1,6 +1,6 @@
 package io.github.NeonStudiosGame.buildings;
 
-public class Halls extends BaseBuilding{
+public class Halls extends BaseBuilding {
     /**
      * This is the constructor for the Halls, just calls the constructor for BaseBuilding via super, and then sets the
      * time to build and texture locations to predetermined ones.
@@ -12,7 +12,4 @@ public class Halls extends BaseBuilding{
         this.timeToBuild = 3;//0;
         this.buildingTextureLocation = buildingsFolder + "halls.png";
     }
-
-
-
 }

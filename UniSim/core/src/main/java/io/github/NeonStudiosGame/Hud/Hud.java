@@ -1,14 +1,12 @@
 package io.github.NeonStudiosGame.Hud;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -35,7 +33,7 @@ public class Hud {
      */
     float height;
     private int worldTime;
-    private int score;
+    private final int score;
     /**
      * The Skin.
      */
@@ -62,9 +60,6 @@ public class Hud {
      * The Play button.
      */
     public ImageButton playButton;
-    /**
-     * The Central hall image button.
-     */
     /**
      * The Build buttons.
      */
@@ -136,7 +131,8 @@ public class Hud {
         buildToggleTable.left().bottom();
         buildToggleTable.setVisible(true);
 
-        buildMenu = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Sprites/hammer.png")))));
+        buildMenu = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+            new Texture(Gdx.files.internal("Sprites/hammer.png")))));
 
         buildToggleTable.add(buildMenu).size(70,70).pad(15);
 
@@ -178,7 +174,7 @@ public class Hud {
         playButton.getStyle().imageChecked = pauseTextureRegionDrawable;
         playButton.setChecked(true);
 
-        buildingCounterLabel = new Label(String.format("Buildings: 0"), skin);
+        buildingCounterLabel = new Label("Buildings: 0", skin);
 
         //Building Buttons
         //Central Hall
@@ -270,7 +266,7 @@ public class Hud {
         HorizontalGroup sportHorizontalGroup = new HorizontalGroup();
         HorizontalGroup busStopHorizontalGroup = new HorizontalGroup();
 
-        VerticalGroup buildingCounterVerticleGroup = new VerticalGroup();
+        VerticalGroup buildingCounterVerticalGroup = new VerticalGroup();
 
         hallHorizontalGroup.addActor(hallImage);
         hallHorizontalGroup.addActor(hallsCounter);
@@ -290,14 +286,14 @@ public class Hud {
         busStopHorizontalGroup.addActor(busStopImage);
         busStopHorizontalGroup.addActor(busCounter);
 
-        buildingCounterVerticleGroup.addActor(hallHorizontalGroup);
-        buildingCounterVerticleGroup.addActor(barsHorizontalGroup);
-        buildingCounterVerticleGroup.addActor(lectureHorizontalGroup);
-        buildingCounterVerticleGroup.addActor(restaurantHorizontalGroup);
-        buildingCounterVerticleGroup.addActor(sportHorizontalGroup);
-        buildingCounterVerticleGroup.addActor(busStopHorizontalGroup);
+        buildingCounterVerticalGroup.addActor(hallHorizontalGroup);
+        buildingCounterVerticalGroup.addActor(barsHorizontalGroup);
+        buildingCounterVerticalGroup.addActor(lectureHorizontalGroup);
+        buildingCounterVerticalGroup.addActor(restaurantHorizontalGroup);
+        buildingCounterVerticalGroup.addActor(sportHorizontalGroup);
+        buildingCounterVerticalGroup.addActor(busStopHorizontalGroup);
 
-        //adding buidings image button to button group
+        //adding buildings image button to button group
         buildButtons = new ButtonGroup<>();
         buildButtons.add(hallImageButton);
         buildButtons.add(barImageButton);
@@ -312,7 +308,7 @@ public class Hud {
         table.add(timeLabel).pad(15).expandX();
         table.add(playButton).pad(15).size(50, 50).expandX().align(Align.right);
         table.row();
-        table.add(buildingCounterVerticleGroup).left().pad(15);
+        table.add(buildingCounterVerticalGroup).left().pad(15);
         table.add(progressBarStack).center().top();
         table.row();
 
@@ -339,7 +335,8 @@ public class Hud {
         Label busLabel = new Label("Bus Stop", skin);
         busLabel.setFontScale(0.5f);
 
-        closeBuildMenu = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Sprites/close.png")))));
+        closeBuildMenu = new ImageButton(new TextureRegionDrawable(new TextureRegion(
+            new Texture(Gdx.files.internal("Sprites/close.png")))));
 
         closeAndOpenButtonGroup = new ButtonGroup<>();
 
