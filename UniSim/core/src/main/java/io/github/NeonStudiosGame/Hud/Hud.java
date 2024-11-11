@@ -151,7 +151,7 @@ public class Hud {
 
         //Progress bars for the time
         progressBarStack = new Stack();
-        teachingYearProgressBar = new ProgressBar(0f, 55f, 1f, false, skin);
+        teachingYearProgressBar = new ProgressBar(0f, 50f, 1f, false, skin);
         summerProgressBar = new ProgressBar(0f, 25f, 1f, false, skin);
 
         //adds it to a stack so they overlap
@@ -426,7 +426,7 @@ public class Hud {
         long seconds = (long) (time % 60);
         year = (int) (time / 80) + 1;
         timeLabel.setText(String.format("Time: %01d:%02d, Y/S: %01d:%s", minute, seconds, year, this.season));
-        float season = (long) (time % 80);
+        float season = (long) (time % 75);
         if (season <= 25) {
             updateSummerProgress(season);
             this.season = "Summer";
@@ -469,11 +469,11 @@ public class Hud {
         summerProgressBar.setValue(time);
     }
     public void updateBuildingCounter(java.util.List<Integer> counters) {
-        hallsCounter.setText(String.format(" : %02d", counters.get(0)));
-        barsCounter.setText(String.format(" : %02d", counters.get(1)));
-        lectureCounter.setText(String.format(" : %02d", counters.get(2)));
-        restaurantCounter.setText(String.format(" : %02d", counters.get(3)));
-        sportCounter.setText(String.format(" : %02d", counters.get(4)));
-        busCounter.setText(String.format(" : %02d", counters.get(5)));
+        hallsCounter.setText(String.format(" : %02d/%02d", counters.get(0), counters.get(6)));
+        barsCounter.setText(String.format(" : %02d/%02d", counters.get(1), counters.get(7)));
+        lectureCounter.setText(String.format(" : %02d/%02d", counters.get(2), counters.get(8)));
+        restaurantCounter.setText(String.format(" : %02d/%02d", counters.get(3), counters.get(9)));
+        sportCounter.setText(String.format(" : %02d/%02d", counters.get(4), counters.get(10)));
+        busCounter.setText(String.format(" : %02d/%02d", counters.get(5), counters.get(11)));
     }
 }
