@@ -16,7 +16,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.UniSim;
 
 
-/** First screen of the application. Displayed after the application is created. */
+/**
+ * First screen of the application, or the "main menu". Displayed after
+ * the application is created or when returned to from another screen.
+ * */
 public class FirstScreen implements Screen {
     private final UniSim parent; // Specifies our parent class
     private final Stage stage;
@@ -28,6 +31,12 @@ public class FirstScreen implements Screen {
 
     private final Image logo;
 
+    /**
+     * Method implemented in all screen classes to initialise the screen.
+     * @param UniSim tells the method the parent class
+     * code commented out makes the background scroll, useful if using an image
+     * or more detailed background. Removed due to bugs that were difficult to solve
+     */
     public FirstScreen (UniSim UniSim) {
         parent = UniSim; // Used for purposes such as switching screens
         stage = new Stage(new FitViewport(640f, 360f)); // Creates a new stage object for the
@@ -39,6 +48,11 @@ public class FirstScreen implements Screen {
         batch = new SpriteBatch();
         logo = new Image(new Texture(Gdx.files.internal("UniSimTitleNew.png")));
     }
+
+    /**
+     * Method used to specify the things to display on the screen when it is loaded.
+     * buttons on the menu are aligned using a table which can be tweaked as needed.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage); // Prepares the screen to register user inputs
@@ -86,6 +100,11 @@ public class FirstScreen implements Screen {
         });
     }
 
+    /**
+     * displays content specified in the show method to the screen, created as a "stage".
+     * @param delta tells the screen how often it should update, allowing it to respond
+     * to user input as it occurs.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -102,6 +121,12 @@ public class FirstScreen implements Screen {
         stage.draw(); // Draws our "stage" to the screen
     }
 
+    /**
+     * Used when the window is being resized through any means. Ensures that the game is playable
+     * at any resolution
+     * @param width the current width of the window
+     * @param height the current height of the window
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true); // Adjusts screen elements in line with window
@@ -122,6 +147,9 @@ public class FirstScreen implements Screen {
         // This method is called when another screen replaces this one.
     }
 
+    /**
+     * Called when switching screens to prevent multiple screens being active at one time
+     */
     @Override
     public void dispose() {
         stage.dispose();

@@ -10,14 +10,13 @@ import io.github.NeonStudiosGame.screens.SettingsScreen;
 
 import static io.github.NeonStudiosGame.AppPreferences.music;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+/**
+ * The parent class, used to load the initial assets for the game and also referred to
+ * for various tasks such as to switch screens or fetch values. All classes should implement
+ * a parent object of UniSim, used to call back to this class.
+ */
 public class UniSim extends Game {
 
-    /*
-    The parent class, used to load the initial assets for the game and also referred to
-    for various tasks such as to switch screens or fetch values. All classes should implement
-    a parent object of UniSim, used to call back to this class.
-     */
 
     public SpriteBatch batch;
     public BitmapFont font;
@@ -40,7 +39,12 @@ public class UniSim extends Game {
     }
 
 
-
+    /**
+     * Method called whenever the application needs to switch screens. Uses a switch statement to
+     * navigate between screens with each screen being represented by a number from 0 onwards.
+     * @param screen tells the method which screen to switch to through a matching number to the screen number.
+     *
+     */
     public void changeScreen(int screen){
         switch(screen){ // Switch case which changes current screen based on selected INT value
             case MENU:
@@ -58,6 +62,12 @@ public class UniSim extends Game {
         }
 
     }
+    /**
+     * Functionally the same as the method above but is used once the game is finished. Passes the user's
+     * score to be displayed and adds additional functionality to display an "end" screen.
+     * @param screen tells the method which screen to switch to through a matching number to the screen number.
+     * @param scorer passes the accumulated score by the user when playing the game.
+     */
     public void changeScreen(int screen, Scorer scorer) {
         switch(screen){ // Switch case which changes current screen based on selected INT value
             case MENU:
@@ -82,6 +92,7 @@ public class UniSim extends Game {
     public void create() {
         music.play();
         preferences = new AppPreferences();
+        preferences.setMusicVolume(0.2f);
         preferences.setSoundVolume(0.2f);
         batch = new SpriteBatch();
         font = new BitmapFont();

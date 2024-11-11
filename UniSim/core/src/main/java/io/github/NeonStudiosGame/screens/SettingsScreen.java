@@ -12,7 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.UniSim;
 
-
+/**
+ * The settings screen of the application, used to tweak peripherals within the application
+ * to the user's preference
+ */
 public class SettingsScreen implements Screen {
 
     private final Stage stage;
@@ -45,8 +48,8 @@ public class SettingsScreen implements Screen {
         Label titleLabel = new Label("Preferences", skin); // Creating labels for the table
         Label musicSliderLabel = new Label("Music Volume", skin);
         Label volumeSliderLabel = new Label("SFX Volume", skin);
-        Label largeFontLabel = new Label("Large Font", skin);
-        Label highContrastLabel = new Label("High Contrast", skin);
+        //Label largeFontLabel = new Label("Large Font", skin);
+        //Label highContrastLabel = new Label("High Contrast", skin);
         Label fullscreenLabel = new Label("Fullscreen", skin);
 
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, skin );
