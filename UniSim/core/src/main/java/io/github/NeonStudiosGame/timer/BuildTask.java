@@ -30,8 +30,6 @@ public class BuildTask extends Task {
      */
     @Override
     public void run() {
-        System.out.println("BuildTask started");
-
         buildMaster.completeConstruction(building);
     }
 }

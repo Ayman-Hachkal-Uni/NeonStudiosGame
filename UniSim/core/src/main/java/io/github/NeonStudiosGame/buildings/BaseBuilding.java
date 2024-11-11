@@ -13,8 +13,6 @@ public class BaseBuilding {
     protected float modifier;
     protected  int scoreFrequency;
     protected String buildingTextureLocation = buildingsFolder + "PLACEHOLDER.png";
-    public static void main(String[] args) {
-    }
 
     /**
      * This is the constructor for the BaseBuilding, just sets the position of the building to the specified one.
@@ -55,6 +53,10 @@ public class BaseBuilding {
         return scoreFrequency;
     }
 
+    public String getBuildingTextureLocation() {
+        return buildingTextureLocation;
+    }
+
     public void multModifier(float modifier) {
         this.modifier *= modifier;
     }
@@ -63,7 +65,5 @@ public class BaseBuilding {
         this.modifier = baseModifier;
     }
 
-    public String getBuildingTextureLocation() {
-        return buildingTextureLocation;
-    }
+
 }

@@ -1,5 +1,9 @@
 package io.github.NeonStudiosGame.buildings;
 
+/**
+ * The booster buildings differ from BaseBuilding because they have a booster attribute, they are supposed to give their
+ * own score the same as other buildings, but also provide bonus score if in proximity to an essential building.
+ */
 public class BoosterBuilding extends BaseBuilding {
     protected final int booster;
     /**

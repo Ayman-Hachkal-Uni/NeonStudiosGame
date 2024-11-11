@@ -247,9 +247,9 @@ public class BuildMaster {
                 graph.distanceBetween(buildingNode, graph.getNode(otherBuilding)) <= debuffDistance) {
                 building.multModifier(debuffPotency);
                 otherBuilding.multModifier(debuffPotency);
+                break;
             }
         }
-
     }
 
     /**

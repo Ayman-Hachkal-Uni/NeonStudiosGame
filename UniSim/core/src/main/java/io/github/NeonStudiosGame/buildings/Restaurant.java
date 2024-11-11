@@ -12,7 +12,4 @@ public class Restaurant extends BoosterBuilding{
         this.timeToBuild = 3;
         this.buildingTextureLocation = buildingsFolder + "restaurant.png";
     }
-
-
-
 }

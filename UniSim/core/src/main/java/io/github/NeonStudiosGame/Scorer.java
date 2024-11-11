@@ -31,6 +31,9 @@ public class Scorer {
      */
     public void addScore(int score) {
         this.score += score;
+        if (this.score < 0) {
+            this.score = 0;
+        }
         updateScoreUI();
     }
     public int getScore() {
