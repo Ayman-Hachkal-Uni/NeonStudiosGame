@@ -2,13 +2,17 @@ package io.github.NeonStudiosGame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.NeonStudiosGame.UniSim;
 
@@ -31,7 +35,7 @@ public class SettingsScreen implements Screen {
         parent = UniSim; // Sets the parent class (used to call preferences, switch screens)
         stage = new Stage(new FitViewport(640f, 360f));
         Gdx.input.setInputProcessor(stage);
-        settingsbg = new Texture(Gdx.files.internal("SettingsBackground.png"));
+        settingsbg = new Texture(Gdx.files.internal("Background.png"));
         batch = new SpriteBatch();
 
     }
@@ -44,7 +48,7 @@ public class SettingsScreen implements Screen {
         table.setDebug(false); // Used for testing; set this to TRUE to see button hitboxes
         stage.addActor(table); // Same table creation idea as main
 
-        Skin skin = new Skin(Gdx.files.internal("skin/flat-earth-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("skin/vhs/skin/vhs-ui.json"));
         Label titleLabel = new Label("Preferences", skin); // Creating labels for the table
         Label musicSliderLabel = new Label("Music Volume", skin);
         Label volumeSliderLabel = new Label("SFX Volume", skin);
@@ -86,7 +90,6 @@ public class SettingsScreen implements Screen {
 
          */
         final CheckBox fullscreenCheckbox = new CheckBox(null, skin);
-        fullscreenCheckbox.setChecked( parent.getPreferences().isFullscreenEnabled());
         fullscreenCheckbox.addListener(event -> {
             boolean enabled = fullscreenCheckbox.isChecked();
             parent.getPreferences().setFullscreenEnabled(enabled);
@@ -107,8 +110,8 @@ public class SettingsScreen implements Screen {
 
 
 
-        table.add(titleLabel);
-        table.row().pad(20, 10, 20, 10); // Sets gap between table rows
+        table.add(titleLabel).pad(0, 10, 20, 10);
+        table.row(); // Sets gap between table rows
         table.row();
         table.add(musicSliderLabel);
         table.add(volumeMusicSlider);
@@ -116,18 +119,9 @@ public class SettingsScreen implements Screen {
         table.add(volumeSliderLabel);
         table.add(soundSlider);
         table.row();
-        /*
-        table.add(largeFontLabel);
-        table.add(largeFontCheckbox);
-        table.row();
-        table.add(highContrastLabel);
-        table.add(highContrastCheckbox);
-        table.row();
-
-         */
-        table.add(fullscreenLabel);
-        table.add(fullscreenCheckbox);
-        table.add(backButton);
+        table.add(fullscreenLabel).padTop(10);
+        table.add(fullscreenCheckbox).padTop(10);
+        table.add(backButton).padTop(10);
 
     }
 

@@ -68,12 +68,12 @@ public class FirstScreen implements Screen {
 
 
         table.add(logo);
-        table.row().pad(20,0,20,0);
-        table.add(startGameButton).fillX().uniformX();
-        table.row().pad(10, 0, 10, 0); // Sets gap between table rows
-        table.add(settingsButton).fillX().uniformX();
         table.row();
-        table.add(exitButton).fillX().uniformX();
+        table.add(startGameButton).fillX().uniformX().pad(20, 0, 10, 0);
+        table.row(); // Sets gap between table rows
+        table.add(settingsButton).fillX().uniformX().pad(10, 0, 10, 0);
+        table.row();
+        table.add(exitButton).fillX().uniformX().pad(10, 0, 10, 0);
 
         startGameButton.addListener(new ChangeListener() { // Activates when the specified button is clicked
             @Override
