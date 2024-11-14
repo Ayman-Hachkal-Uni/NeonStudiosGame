@@ -44,13 +44,13 @@ public class BuildMaster {
         this.gameScreen = gameScreen;
         this.currentlyBuilding = 0;
         this.maxPerBuildingType = new HashMap<>();
-        this.maxPerBuildingType.put(Bar.class, 2);
-        this.maxPerBuildingType.put(BusStop.class, 3);
-        this.maxPerBuildingType.put(Halls.class, 4);
-        this.maxPerBuildingType.put(LectureTheatre.class, 4);
-        this.maxPerBuildingType.put(Restaurant.class, 2);
-        this.maxPerBuildingType.put(SportsHall.class, 2);
-        this.maxPerBuildingType.put(Road.class, 15);
+        this.maxPerBuildingType.put(Bar.class, 4);
+        this.maxPerBuildingType.put(BusStop.class, 6);
+        this.maxPerBuildingType.put(Halls.class, 10);
+        this.maxPerBuildingType.put(LectureTheatre.class, 8);
+        this.maxPerBuildingType.put(Restaurant.class, 4);
+        this.maxPerBuildingType.put(SportsHall.class, 4);
+        this.maxPerBuildingType.put(Road.class, 60);
         this.counters = new HashMap<>(Map.copyOf(maxPerBuildingType));
         this.counters.replaceAll((k,v)->0);
     }
